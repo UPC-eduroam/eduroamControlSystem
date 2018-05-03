@@ -1,0 +1,14 @@
+spring:
+    datasource:
+        url: jdbc:mysql://182.254.133.79:3306/eduroam_control_system?useSSL=false
+        username: eduroam
+        password: eduroam_control_system
+    jpa:
+        show-sql: true
+        hibernate:
+            ddl-auto: update
+            naming:
+              physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
+
+server:
+    port: 8081
