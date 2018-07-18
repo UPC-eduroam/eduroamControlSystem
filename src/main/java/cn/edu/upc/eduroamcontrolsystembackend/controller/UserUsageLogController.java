@@ -1,6 +1,9 @@
 package cn.edu.upc.eduroamcontrolsystembackend.controller;
 
 import cn.edu.upc.eduroamcontrolsystembackend.service.UserUsageLogService;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,7 +33,16 @@ public class UserUsageLogController {
      * @param orgDomain the orgDomain, 用户所在机构的域名
      */
     @PostMapping("/CreateUserUsageLog")
+    // public void createUserUsageLog(int userId, Date loginTime, String orgDomain) {
+
+    @ApiOperation("创建用户使用日志")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name="userId",value = "the user id",dataType = "int"),
+            @ApiImplicitParam(name="loginTime",value = "the login time",dataType = "int"),
+            @ApiImplicitParam(name="orgDomain",value="the orgDomain",dataType = "String")
+    })
     public void createUserUsageLog(int userId, Date loginTime, String orgDomain) {
+
         userUsageLogService.createUserUsageLog(userId, loginTime, orgDomain);
     }
 
@@ -45,3 +57,4 @@ public class UserUsageLogController {
         return userUsageLogService.findAllByUserId(userId);
     }
 }
+
