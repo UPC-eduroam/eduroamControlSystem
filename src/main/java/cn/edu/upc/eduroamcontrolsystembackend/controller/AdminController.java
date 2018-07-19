@@ -7,7 +7,6 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -38,8 +37,9 @@ public class AdminController {
             @ApiImplicitParam(paramType = "query",name ="reason",value = "是管理员",required = true,dataType = "boolean")
     })
     @GetMapping("/isAdmin")
-    public Object isAdmin(int adminId) {
-        return adminService.findByAdminId(adminId) != null;
+    public Object isAdmin(Boolean adminId) {
+        return adminId= adminService.findByAdminId(adminId);
+
     }
 
 }

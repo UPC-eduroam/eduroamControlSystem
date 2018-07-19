@@ -1,9 +1,9 @@
 package cn.edu.upc.eduroamcontrolsystembackend.service;
 
+import org.springframework.stereotype.Service;
 import cn.edu.upc.eduroamcontrolsystembackend.dao.AdminDAO;
 import cn.edu.upc.eduroamcontrolsystembackend.model.Admin;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 /**
  * AdminService
@@ -17,9 +17,14 @@ public class AdminService {
     @Autowired
     private AdminDAO adminDAO;
 
-    public Admin findByAdminId(int adminId) {
-        return adminDAO.findByAdminId(adminId);
+    public Boolean findByAdminId(Boolean adminId) {
+    Admin admin=adminDAO.findByAdminId(adminId);
+        if(admin==null)
+        {return false;
+       // return adminDAO.findByAdminId(adminId);
     }
+    else
+        return true;
 
 
-}
+}}

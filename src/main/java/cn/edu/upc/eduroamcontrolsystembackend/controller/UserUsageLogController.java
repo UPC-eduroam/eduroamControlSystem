@@ -54,6 +54,7 @@ public class UserUsageLogController {
      */
     @GetMapping("/RetrieveAllUserUsageLogByUserId")
     public Object retrieveAllUserUsageLogByUserId(int userId) {
+
         return userUsageLogService.findAllByUserId(userId);
     }
 }

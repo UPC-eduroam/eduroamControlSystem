@@ -11,5 +11,5 @@ import org.springframework.data.repository.CrudRepository;
  */
 
 public interface AdminDAO extends CrudRepository<Admin, Integer> {
-    Admin findByAdminId(int adminId);
+    Admin findByAdminId(Boolean adminId);
 }
