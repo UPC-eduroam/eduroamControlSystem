@@ -34,7 +34,7 @@ public class BlacklistService {
         blacklistDAO.deleteByUserId(blacklist.getId());
     }
     /**
-     * 通过id查找黑名单用户
+     * 通过id判断是否在黑名单
      *
      * @return
      */
