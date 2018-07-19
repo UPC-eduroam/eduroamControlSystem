@@ -17,8 +17,19 @@ public class UserService {
     @Autowired
     private UserDAO userDAO;
 
-    public User findByUserId(int userId)
-    {
+    /**
+     * 根据id判断是否是用户
+     *
+     * @param userId the user id
+     * @return the object, true/false
+     */
+    public boolean isUser(int userId) {
+        if (findByUserId(userId) == null)
+            return false;
+        else return true;
+    }
+
+    public User findByUserId(int userId) {
         return userDAO.findByUserId(userId);
     }
 }
