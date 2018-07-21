@@ -17,14 +17,7 @@ public class AdminService {
     @Autowired
     private AdminDAO adminDAO;
 
-    public Boolean findByAdminId(Boolean adminId) {
-    Admin admin=adminDAO.findByAdminId(adminId);
-        if(admin==null)
-        {return false;
-       // return adminDAO.findByAdminId(adminId);
+    public Admin findByAdminId(int adminId) {
+        return adminDAO.findByAdminId(adminId);
     }
-    else
-        return true;
-
-
-}}
+}

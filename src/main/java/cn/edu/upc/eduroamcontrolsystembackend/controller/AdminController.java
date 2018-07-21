@@ -33,13 +33,12 @@ public class AdminController {
     @ApiOperation(value = "判断是否是管理员")
     @ApiImplicitParams({
             @ApiImplicitParam(paramType = "query", name = SwaggerParameter.Authorization, dataType = "String"),
-            @ApiImplicitParam(paramType = "query" , name = "adminId",value = "管理员Id",required = true,dataType = "int"),
-            @ApiImplicitParam(paramType = "query",name ="reason",value = "是管理员",required = true,dataType = "boolean")
+            @ApiImplicitParam(paramType = "query", name = "adminId", value = "管理员Id", required = true, dataType = "int"),
+            @ApiImplicitParam(paramType = "query", name = "reason", value = "是管理员", required = true, dataType = "boolean")
     })
     @GetMapping("/isAdmin")
-    public Object isAdmin(Boolean adminId) {
-        return adminId= adminService.findByAdminId(adminId);
-
+    public Object isAdmin(int adminId) {
+        return adminService.findByAdminId(adminId) != null;
     }
 
 }
