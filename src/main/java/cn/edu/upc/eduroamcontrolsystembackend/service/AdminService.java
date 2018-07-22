@@ -18,6 +18,6 @@ public class AdminService {
     private AdminDAO adminDAO;
 
     public Admin findByAdminId(int adminId) {
-        return adminDAO.findByAdminId(adminId);
+        return adminDAO.findFirstByAdminId(adminId);
     }
 }

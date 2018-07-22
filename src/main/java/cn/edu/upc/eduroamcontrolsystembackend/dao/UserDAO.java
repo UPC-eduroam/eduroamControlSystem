@@ -11,5 +11,5 @@ import org.springframework.data.repository.CrudRepository;
  */
 
 public interface UserDAO extends CrudRepository<User, Integer> {
-    User findByUserId(int userId);
+    User findFirstByUserId(int userId);
 }

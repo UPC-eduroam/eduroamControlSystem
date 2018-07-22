@@ -30,7 +30,7 @@ public class BlacklistService {
      * @param userId
      */
     public void deleteBlacklist(int userId) {
-        Blacklist blacklist = blacklistDAO.findByUserId(userId);
+        Blacklist blacklist = blacklistDAO.findFirstByUserId(userId);
         blacklistDAO.deleteByUserId(blacklist.getId());
     }
     /**
@@ -40,7 +40,7 @@ public class BlacklistService {
      */
     public Boolean findByUserId(int userId) {
 
-        Blacklist blacklist=blacklistDAO.findByUserId(userId);
+        Blacklist blacklist=blacklistDAO.findFirstByUserId(userId);
         if (blacklist==null){
             return false;
         }else return true;
