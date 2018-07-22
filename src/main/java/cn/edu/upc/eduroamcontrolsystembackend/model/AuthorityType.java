@@ -1,4 +1,4 @@
-package cn.edu.upc.eduroamcontrolsystembackend.security.model;
+package cn.edu.upc.eduroamcontrolsystembackend.model;
 
 /**
  * 定义权限种类, 分为普通用户与管理员

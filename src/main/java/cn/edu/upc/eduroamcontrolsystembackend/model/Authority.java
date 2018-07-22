@@ -1,6 +1,4 @@
-package cn.edu.upc.eduroamcontrolsystembackend.security.model;
-
-import cn.edu.upc.eduroamcontrolsystembackend.model.User;
+package cn.edu.upc.eduroamcontrolsystembackend.model;
 
 import javax.persistence.*;
 import java.util.List;
