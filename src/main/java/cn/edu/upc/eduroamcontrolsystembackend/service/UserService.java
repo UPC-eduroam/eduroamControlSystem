@@ -24,12 +24,12 @@ public class UserService {
      * @return the object, true/false
      */
     public boolean isUser(int userId) {
-        if (findByUserId(userId) == null)
+        if (findFirstByUserId(userId) == null)
             return false;
         else return true;
     }
 
-    public User findByUserId(int userId) {
-        return userDAO.findByUserId(userId);
+    public User findFirstByUserId(int userId) {
+        return userDAO.findFirstByUserId(userId);
     }
 }

@@ -22,11 +22,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
     @Autowired
     private UserService userService;
+
     @ApiOperation(value = "是否是用户")
     @ApiImplicitParams({
             @ApiImplicitParam(paramType = "query", name = SwaggerParameter.Authorization, dataType = "String"),
-            @ApiImplicitParam(paramType = "query",name ="userId",value = "用户Id",required = true,dataType = "int"),
-            @ApiImplicitParam(paramType = "query",name ="reason",value = "加入原因",required = true,dataType = "String")
+            @ApiImplicitParam(paramType = "query", name = "userId", value = "用户Id", required = true, dataType = "int"),
+            @ApiImplicitParam(paramType = "query", name = "reason", value = "加入原因", required = true, dataType = "String")
     })
     /**
      * 根据id判断是否是用户
@@ -36,7 +37,7 @@ public class UserController {
      */
     @GetMapping("/isUser")
     public Object isUser(int userId) {
-        return userService.findByUserId(userId) != null;
+        return userService.findFirstByUserId(userId) != null;
     }
 }
 
