@@ -2,6 +2,7 @@ package cn.edu.upc.eduroamcontrolsystembackend.model;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -19,8 +20,8 @@ public class User {
     private int id;
 
     private int userId;
-
     private String password;
+    private Date LastPasswordResetDate;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
@@ -28,6 +29,7 @@ public class User {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "authority_id"))
     private List<Authority> authorities = new ArrayList<>();
+
 
     public User() {
     }
@@ -54,6 +56,14 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Date getLastPasswordResetDate() {
+        return LastPasswordResetDate;
+    }
+
+    public void setLastPasswordResetDate(Date lastPasswordResetDate) {
+        LastPasswordResetDate = lastPasswordResetDate;
     }
 
     public List<Authority> getAuthorities() {
