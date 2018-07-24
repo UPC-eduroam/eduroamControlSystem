@@ -37,11 +37,11 @@ public class UserUsageLogController {
 
     @ApiOperation("创建用户使用日志")
     @ApiImplicitParams({
-            @ApiImplicitParam(name="userId",value = "the user id",dataType = "int"),
-            @ApiImplicitParam(name="loginTime",value = "the login time",dataType = "int"),
-            @ApiImplicitParam(name="orgDomain",value="the orgDomain",dataType = "String")
+            @ApiImplicitParam(name = "userId", value = "the user id", dataType = "int"),
+            @ApiImplicitParam(name = "loginTime", value = "the login time", dataType = "int"),
+            @ApiImplicitParam(name = "orgDomain", value = "the orgDomain", dataType = "String")
     })
-    public void createUserUsageLog(int userId, Date loginTime, String orgDomain) {
+    public void createUserUsageLog(String userId, Date loginTime, String orgDomain) {
 
         userUsageLogService.createUserUsageLog(userId, loginTime, orgDomain);
     }
@@ -52,8 +52,8 @@ public class UserUsageLogController {
      * @param userId the user id
      * @return the object, iterable(UserUsageLog)
      */
-    @GetMapping("/RetrieveAllUserUsageLogByUserId")
-    public Object retrieveAllUserUsageLogByUserId(int userId) {
+    @GetMapping("/GetAllUserUsageLogByUserId")
+    public Object getAllUserUsageLogByUserId(String userId) {
 
         return userUsageLogService.findAllByUserId(userId);
     }

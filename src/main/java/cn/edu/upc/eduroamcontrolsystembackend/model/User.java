@@ -1,5 +1,7 @@
 package cn.edu.upc.eduroamcontrolsystembackend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Date;
@@ -19,10 +21,11 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-    private int userId;
+    private String userId;
     private String password;
     private Date LastPasswordResetDate;
 
+    @JsonIgnore
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "user_authority",
@@ -34,7 +37,7 @@ public class User {
     public User() {
     }
 
-    public User(int userId) {
+    public User(String userId) {
         this.userId = userId;
     }
 
@@ -42,11 +45,11 @@ public class User {
         return id;
     }
 
-    public int getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 

@@ -11,5 +11,5 @@ import org.springframework.data.repository.CrudRepository;
  */
 
 public interface AdminOperationLogDAO extends CrudRepository<AdminOperationLog, Integer> {
-    Iterable<AdminOperationLog> findAllByAdminId(int adminId);
+    Iterable<AdminOperationLog> findAllByAdminId(String adminId);
 }

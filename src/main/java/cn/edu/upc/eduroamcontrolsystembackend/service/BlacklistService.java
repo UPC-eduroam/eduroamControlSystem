@@ -16,42 +16,45 @@ import org.springframework.stereotype.Service;
 public class BlacklistService {
     @Autowired
     private BlacklistDAO blacklistDAO;
-/**
-* 创建黑名单
- * @param userId
- */
-    public Blacklist createBlacklist(int userId) {
+
+    /**
+     * 创建黑名单
+     *
+     * @param userId
+     */
+    public Blacklist createBlacklist(String userId) {
         Blacklist blacklist = new Blacklist(userId);
-      return  blacklistDAO.save(blacklist);
+        return blacklistDAO.save(blacklist);
     }
+
     /**
      * 从黑名单中把某个user删除
      *
      * @param userId
      */
-    public void deleteBlacklist(int userId) {
+    public void deleteBlacklist(String userId) {
         Blacklist blacklist = blacklistDAO.findFirstByUserId(userId);
-        blacklistDAO.deleteByUserId(blacklist.getId());
+        blacklistDAO.deleteByUserId(blacklist.getUserId());
     }
+
     /**
      * 通过id判断是否在黑名单
      *
      * @return
      */
-    public Boolean findByUserId(int userId) {
-
-        Blacklist blacklist=blacklistDAO.findFirstByUserId(userId);
-        if (blacklist==null){
+    public Boolean findByUserId(String userId) {
+        Blacklist blacklist = blacklistDAO.findFirstByUserId(userId);
+        if (blacklist == null) {
             return false;
-        }else return true;
+        } else return true;
     }
+
     /**
      * 查找所有黑名单用户
      *
      * @return
      */
     public Iterable<Blacklist> findAll() {
-
         return blacklistDAO.findAll();
     }
 

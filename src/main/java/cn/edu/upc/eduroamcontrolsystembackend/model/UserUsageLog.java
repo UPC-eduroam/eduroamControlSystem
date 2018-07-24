@@ -17,14 +17,14 @@ public class UserUsageLog {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-    private int userId;
+    private String userId;
     private Date loginTime;
     private String orgDomain;
 
     public UserUsageLog() {
     }
 
-    public UserUsageLog(int userId, Date loginTime, String orgDomain) {
+    public UserUsageLog(String userId, Date loginTime, String orgDomain) {
         this.userId = userId;
         this.loginTime = loginTime;
         this.orgDomain = orgDomain;
@@ -34,11 +34,11 @@ public class UserUsageLog {
         return id;
     }
 
-    public int getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 

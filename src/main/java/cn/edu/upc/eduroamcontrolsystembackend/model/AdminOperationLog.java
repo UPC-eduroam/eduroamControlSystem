@@ -17,7 +17,7 @@ public class AdminOperationLog {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-    private int adminId;
+    private String adminId;
     private Date operatingTime;
     private String level;
     private String operation;
@@ -25,8 +25,8 @@ public class AdminOperationLog {
     public AdminOperationLog() {
     }
 
-    public AdminOperationLog(int adminId, Date operatingTime, String level, String operation) {
-        this.adminId = adminId;
+    public AdminOperationLog(String adminName, Date operatingTime, String level, String operation) {
+        this.adminId = adminName;
         this.operatingTime = operatingTime;
         this.level = level;
         this.operation = operation;
@@ -36,11 +36,11 @@ public class AdminOperationLog {
         return id;
     }
 
-    public int getAdminId() {
+    public String getAdminId() {
         return adminId;
     }
 
-    public void setAdminId(int adminId) {
+    public void setAdminId(String adminId) {
         this.adminId = adminId;
     }
 

@@ -16,13 +16,13 @@ import java.util.List;
 
 public class JwtUser implements UserDetails {
     private int id;
-    private int userId;
+    private String userId;
     private String password;
     private final Date LastPasswordResetDate;
     private final Collection<? extends GrantedAuthority> authorities;
 
 
-    public JwtUser(int id, int userId, String password, Date LastPasswordResetDate, List<GrantedAuthority> authorities) {
+    public JwtUser(int id, String userId, String password, Date LastPasswordResetDate, List<GrantedAuthority> authorities) {
         this.id = id;
         this.userId = userId;
         this.password = password;
@@ -38,11 +38,7 @@ public class JwtUser implements UserDetails {
         this.id = id;
     }
 
-    public int getUserId() {
-        return userId;
-    }
-
-    public void setUserId(int userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 
@@ -66,7 +62,7 @@ public class JwtUser implements UserDetails {
 
     @Override
     public String getUsername() {
-        return String.valueOf(userId);
+        return userId;
     }
 
     @Override

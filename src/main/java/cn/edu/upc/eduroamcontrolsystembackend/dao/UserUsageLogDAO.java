@@ -11,5 +11,5 @@ import org.springframework.data.repository.CrudRepository;
  */
 
 public interface UserUsageLogDAO extends CrudRepository<UserUsageLog, Integer> {
-    Iterable<UserUsageLog> findAllByUserId(int userId);
+    Iterable<UserUsageLog> findAllByUserId(String userId);
 }

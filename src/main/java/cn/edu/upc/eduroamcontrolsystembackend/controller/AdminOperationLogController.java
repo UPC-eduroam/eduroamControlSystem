@@ -1,11 +1,11 @@
 package cn.edu.upc.eduroamcontrolsystembackend.controller;
 
-import cn.edu.upc.eduroamcontrolsystembackend.dao.AdminOperationLogDAO;
 import cn.edu.upc.eduroamcontrolsystembackend.service.AdminOperationLogService;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -39,7 +39,8 @@ public class AdminOperationLogController {
             @ApiImplicitParam(name = "level", value = "设置权限", dataType = "String"),
             @ApiImplicitParam(name = "operation", value = "具体操作内容", dataType = "String")
     })
-    void createAdminOperationLog(int adminId, Date operatingTime, String level, String operation) {
+    @GetMapping("/CreateAdminOperationLog")
+    void createAdminOperationLog(String adminId, Date operatingTime, String level, String operation) {
         adminOperationLogService.createAdminOperationLog(adminId, operatingTime, level, operation);
     }
 }

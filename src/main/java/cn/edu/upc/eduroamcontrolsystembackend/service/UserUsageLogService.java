@@ -18,6 +18,7 @@ import java.util.Date;
 public class UserUsageLogService {
     @Autowired
     private UserUsageLogDAO userUsageLogDAO;
+
     /**
      * 创建用户使用日志
      *
@@ -25,15 +26,15 @@ public class UserUsageLogService {
      * @param loginTime the login time, 在校外登录eduroam的时间
      * @param orgDomain the orgDomain, 用户所在机构的域名
      */
-    public UserUsageLog createUserUsageLog(int userId, Date loginTime, String orgDomain) {
+    public void createUserUsageLog(String userId, Date loginTime, String orgDomain) {
         UserUsageLog userUsageLog = new UserUsageLog(userId, loginTime, orgDomain);
         userUsageLog.setUserId(userId);
         userUsageLog.setLoginTime(loginTime);
         userUsageLog.setOrgDomain(orgDomain);
-        return userUsageLogDAO.save(userUsageLog);
+        userUsageLogDAO.save(userUsageLog);
     }
 
-    public Iterable<UserUsageLog> findAllByUserId(int userId) {
+    public Iterable<UserUsageLog> findAllByUserId(String userId) {
         return userUsageLogDAO.findAllByUserId(userId);
     }
 
