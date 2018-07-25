@@ -3,7 +3,6 @@ package cn.edu.upc.eduroamcontrolsystembackend.security.controller;
 import cn.edu.upc.eduroamcontrolsystembackend.dao.UserDAO;
 import cn.edu.upc.eduroamcontrolsystembackend.dto.ResponseMessage;
 import cn.edu.upc.eduroamcontrolsystembackend.model.User;
-import cn.edu.upc.eduroamcontrolsystembackend.security.service.JwtAuthenticationResponse;
 import cn.edu.upc.eduroamcontrolsystembackend.security.service.JwtTokenUtil;
 import cn.edu.upc.eduroamcontrolsystembackend.security.service.JwtUser;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,36 +51,30 @@ public class AuthenticationController {
     @RequestMapping(value = "/user/login", method = RequestMethod.POST)
     public Object createAuthenticationToken(String username, String password) throws AuthenticationException {
         final UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-        logger.info(userDetails);
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
         if (!bCryptPasswordEncoder.matches(password, userDetails.getPassword())) {
             return new ResponseMessage(-1, "登录失败, 用户名或密码错误");
         }
-
-        System.out.print("print userDetails" + userDetails);
-
         // 生成token
         final String token = jwtTokenUtil.generateToken((JwtUser) userDetails);
         Map<Object, Object> map = new HashMap<>();
         User user = userDAO.findFirstByUserId(userDetails.getUsername());
-
-        System.out.print("print token" + token);
-
         map.put("user", user);
         map.put("token", token);
         return map;
     }
 
     //刷新token接口
-    @RequestMapping(value = "/refresh", method = RequestMethod.GET)
+    @RequestMapping(value = "/token/refresh", method = RequestMethod.GET)
     public ResponseEntity<?> refreshAndGetAuthenticationToken(HttpServletRequest request) {
         String token = request.getHeader(tokenHeader);
         String username = jwtTokenUtil.getUserIdFromToken(token);
         JwtUser user = (JwtUser) userDetailsService.loadUserByUsername(username);
 
         if (jwtTokenUtil.canTokenBeRefreshed(token, user.getLastPasswordResetDate())) {
+            logger.info("已为用户 " + username + " 刷新token");
             String refreshedToken = jwtTokenUtil.refreshToken(token);
-            return ResponseEntity.ok(new JwtAuthenticationResponse(refreshedToken));
+            return ResponseEntity.ok(refreshedToken);
         } else {
             return ResponseEntity.badRequest().body(null);
         }

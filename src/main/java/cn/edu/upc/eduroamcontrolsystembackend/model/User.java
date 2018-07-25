@@ -22,7 +22,10 @@ public class User {
     private int id;
 
     private String userId;
+
+    @JsonIgnore
     private String password;
+
     private Date LastPasswordResetDate;
 
     @JsonIgnore

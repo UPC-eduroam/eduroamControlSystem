@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 为开发时方便前端测试而创建一个amdin和一个user用户
+ * 为开发时方便前端测试而创建一个admin和一个user用户
  *
  * @author jay
  * @date 2018/07/23

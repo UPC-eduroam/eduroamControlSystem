@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * This is description.
+ * 基于token进行身份过滤
  *
  * @author jay
  * @date 2018/07/23
@@ -43,9 +43,8 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
 //        String authToken = request.getParameter("Authorization");
         String userId = jwtTokenUtil.getUserIdFromToken(authToken);
 
-        logger.info("checking authentication for user " + userId);
-
         if (userId != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+            logger.info("checking authentication for user " + userId);
             UserDetails userDetails = this.userDetailsService.loadUserByUsername(userId);
             if (jwtTokenUtil.validateToken(authToken, userDetails)) {
                 UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());

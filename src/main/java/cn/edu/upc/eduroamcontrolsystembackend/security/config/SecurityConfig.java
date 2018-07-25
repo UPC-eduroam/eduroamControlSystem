@@ -16,8 +16,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 /**
  * WebSecurityConfig, used to config Spring Security
@@ -30,7 +28,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     //无需权限即可访问的白名单
     private static final String[] AUTH_WHITELIST = {
@@ -49,7 +47,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     };
 
-
     @Autowired
     private JwtAuthenticationEntryPoint unauthorizedHandler;
 
@@ -62,7 +59,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         authenticationManagerBuilder
                 // 设置UserDetailsService
                 .userDetailsService(this.userDetailsService)
-                // 使用BCrypt进行密码的hash
+                // 使用BCrypt对密码进行加密
                 .passwordEncoder(passwordEncoder());
     }
 
@@ -76,18 +73,19 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return new JwtAuthenticationTokenFilter();
     }
 
-
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
+                //禁用csrf防护功能,因为使用token进行身份验证,所以较为安全,而且禁用后也方便开发
                 .csrf().disable()
+                //添加对于出现权限问题的异常处理
                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
+                //禁用session,因为使用token,所以不需要session
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeRequests()
-                .antMatchers(AUTH_WHITELIST).permitAll()
-                // 对于获取token的rest api要允许匿名访问
-                .antMatchers("/auth/**").permitAll()
-                .antMatchers("/user/**").permitAll()
-                // 除上面外的所有请求全部需要鉴权认证
+                .antMatchers(HttpMethod.GET, AUTH_WHITELIST).permitAll()
+                //允许匿名访问获取token的api
+                .antMatchers("/user/login").permitAll()
+                //除上面允许匿名的api外,其他的全部需要身份认证
                 .anyRequest().authenticated();
 
         //根据token进行身份过滤
@@ -97,5 +95,4 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         // 禁用缓存
         httpSecurity.headers().cacheControl();
     }
-
 }
