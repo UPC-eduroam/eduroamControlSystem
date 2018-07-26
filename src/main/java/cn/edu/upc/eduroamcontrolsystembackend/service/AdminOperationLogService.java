@@ -36,4 +36,9 @@ public class AdminOperationLogService {
         adminOperationLogDAO.save(adminOperationLog);
     }
 
+    public Iterable<AdminOperationLog> findAllByAdminId(String adminId) {
+        return adminOperationLogDAO.findAllByAdminId(adminId);
+    }
+
+
 }
