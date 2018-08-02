@@ -5,8 +5,6 @@ import cn.edu.upc.eduroamcontrolsystembackend.model.UserUsageLog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-
 /**
  * UserUsageLogService
  *
@@ -26,7 +24,7 @@ public class UserUsageLogService {
      * @param loginTime the login time, 在校外登录eduroam的时间
      * @param orgDomain the orgDomain, 用户所在机构的域名
      */
-    public void createUserUsageLog(String userId, Date loginTime, String orgDomain) {
+    public void createUserUsageLog(String userId, String loginTime, String orgDomain) {
         UserUsageLog userUsageLog = new UserUsageLog(userId, loginTime, orgDomain);
         userUsageLog.setUserId(userId);
         userUsageLog.setLoginTime(loginTime);
@@ -36,6 +34,10 @@ public class UserUsageLogService {
 
     public Iterable<UserUsageLog> findAllByUserId(String userId) {
         return userUsageLogDAO.findAllByUserId(userId);
+    }
+
+    public Iterable<UserUsageLog> findAllByUserIdAndLoginTimeBetween(String userId, String startDate, String endDate) {
+        return userUsageLogDAO.findAllByUserIdAndLoginTimeBetween(userId, startDate, endDate);
     }
 
 }

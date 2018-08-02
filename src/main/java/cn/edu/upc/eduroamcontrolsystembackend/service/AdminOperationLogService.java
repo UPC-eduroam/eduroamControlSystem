@@ -40,7 +40,9 @@ public class AdminOperationLogService {
         return adminOperationLogDAO.findAllByAdminId(adminId);
     }
 
-
+    public Iterable<AdminOperationLog> findAllByAdminIdAndOperatingTimeBetween(String adminId, String startDate, String endDate) {
+        return adminOperationLogDAO.findAllByAdminIdAndOperatingTimeBetween(adminId, startDate, endDate);
+    }
 
 
 }

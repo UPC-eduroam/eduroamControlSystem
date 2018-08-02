@@ -1,7 +1,6 @@
 package cn.edu.upc.eduroamcontrolsystembackend.model;
 
 import javax.persistence.*;
-import java.util.Date;
 
 /**
  * 用户在校外使用eduroam的使用情况记录表
@@ -18,13 +17,13 @@ public class UserUsageLog {
     private int id;
 
     private String userId;
-    private Date loginTime;
+    private String loginTime;
     private String orgDomain;
 
     public UserUsageLog() {
     }
 
-    public UserUsageLog(String userId, Date loginTime, String orgDomain) {
+    public UserUsageLog(String userId, String loginTime, String orgDomain) {
         this.userId = userId;
         this.loginTime = loginTime;
         this.orgDomain = orgDomain;
@@ -42,11 +41,11 @@ public class UserUsageLog {
         this.userId = userId;
     }
 
-    public Date getLoginTime() {
+    public String getLoginTime() {
         return loginTime;
     }
 
-    public void setLoginTime(Date loginTime) {
+    public void setLoginTime(String loginTime) {
         this.loginTime = loginTime;
     }
 

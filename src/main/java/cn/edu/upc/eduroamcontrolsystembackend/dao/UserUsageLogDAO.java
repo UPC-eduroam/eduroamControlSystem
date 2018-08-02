@@ -1,5 +1,6 @@
 package cn.edu.upc.eduroamcontrolsystembackend.dao;
 
+import cn.edu.upc.eduroamcontrolsystembackend.model.AdminOperationLog;
 import cn.edu.upc.eduroamcontrolsystembackend.model.UserUsageLog;
 import org.springframework.data.repository.CrudRepository;
 
@@ -12,4 +13,6 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface UserUsageLogDAO extends CrudRepository<UserUsageLog, Integer> {
     Iterable<UserUsageLog> findAllByUserId(String userId);
+
+    Iterable<UserUsageLog> findAllByUserIdAndLoginTimeBetween(String userId, String startDate, String endDate);
 }
