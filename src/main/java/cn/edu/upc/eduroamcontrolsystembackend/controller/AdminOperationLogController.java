@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 
 /**
@@ -20,8 +21,7 @@ import java.util.Date;
  * @date 2018/05/02
  */
 
-
-@PreAuthorize("hasRole('ADMIN')")
+//@PreAuthorize("hasRole('ADMIN')")
 @RestController
 @RequestMapping("AdminOperationLogController")
 public class AdminOperationLogController {
@@ -30,11 +30,13 @@ public class AdminOperationLogController {
 
     @ApiOperation("获取指定管理员的操作记录")
     @ApiImplicitParams({
-            @ApiImplicitParam(paramType = "query", name = SwaggerParameter.Authorization, value = "token", dataType = "String"),
-            @ApiImplicitParam(paramType = "query", name = "adminId", value = "管理员用户Id", required = true, dataType = "String")
+            @ApiImplicitParam(paramType = "query", name = "userId", value = "当前身份的管理员用户Id", required = true, dataType = "String"),
+            @ApiImplicitParam(paramType = "query", name = "objectId", value = "需要查询的管理员用户Id(即操作对象的ID)", required = true, dataType = "String")
     })
     @GetMapping("/GetAllAdminOperationLogsByAdminId")
-    public Object getAllAdminOperationLogsByAdminId(String adminId) {
-        return adminOperationLogService.findAllByAdminId(adminId);
+    public Object getAllAdminOperationLogsByAdminId(String userId, String objectId) {
+        adminOperationLogService.createAdminOperationLog(userId, new Date(), "user", "查询管理员" + objectId + "的操作日志");
+        return adminOperationLogService.findAllByAdminId(objectId);
     }
 }
+

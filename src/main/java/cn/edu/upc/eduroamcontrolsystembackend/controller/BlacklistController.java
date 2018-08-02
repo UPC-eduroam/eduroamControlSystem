@@ -23,7 +23,7 @@ import java.util.Date;
  * @date 2018/05/02
  */
 
-@PreAuthorize("hasRole('ADMIN')")
+//@PreAuthorize("hasRole('ADMIN')")
 @RestController
 @RequestMapping("BlackListController")
 public class BlacklistController {
@@ -35,46 +35,46 @@ public class BlacklistController {
 
     @ApiOperation(value = "添加用户到黑名单")
     @ApiImplicitParams({
-            @ApiImplicitParam(paramType = "query", name = SwaggerParameter.Authorization, value = "token", dataType = "String"),
-            @ApiImplicitParam(paramType = "query", name = "userId", value = "需要添加进黑名单的用户Id", required = true, dataType = "String"),
+            @ApiImplicitParam(paramType = "query", name = "userId", value = "当前身份的管理员用户Id", required = true, dataType = "String"),
+            @ApiImplicitParam(paramType = "query", name = "objectId", value = "需要添加进黑名单的用户Id(即操作对象的ID)", required = true, dataType = "String")
     })
     @PostMapping("/AddUserToBlacklist")
-    public Object addUserToBlacklist(HttpServletRequest request) {
-        String adminId = request.getParameter("adminId");
-        String userId = request.getParameter("userId");
-        blacklistService.createBlacklist(userId);
-        adminOperationLogService.createAdminOperationLog(adminId, new Date(), "system", "添加用户" + userId + "到黑名单");
+    public Object addUserToBlacklist(String userId, String objectId) {
+        blacklistService.createBlacklist(objectId);
+        adminOperationLogService.createAdminOperationLog(userId, new Date(), "user", "添加用户" + objectId + "到黑名单");
         return true;
     }
 
     @ApiOperation(value = "将用户从黑名单移除")
     @ApiImplicitParams({
-            @ApiImplicitParam(paramType = "query", name = SwaggerParameter.Authorization, value = "token", dataType = "String"),
-            @ApiImplicitParam(paramType = "query", name = "userId", value = "需要移除的用户Id", required = true, dataType = "String")
+            @ApiImplicitParam(paramType = "query", name = "userId", value = "当前身份的管理员用户Id", required = true, dataType = "String"),
+            @ApiImplicitParam(paramType = "query", name = "objectId", value = "需要移除的用户Id(即操作对象的ID)", required = true, dataType = "String")
     })
     @PostMapping("/DeleteUserFromBlackList")
-    public Object deleteUserFromBlacklist(HttpServletRequest request) {
-        String adminId = request.getParameter("adminId");
-        String userId = request.getParameter("userId");
-        blacklistService.deleteBlacklist(userId);
-        adminOperationLogService.createAdminOperationLog(adminId, new Date(), "system", "将用户" + userId + "从黑名单移除");
+    public Object deleteUserFromBlacklist(String userId, String objectId) {
+        blacklistService.deleteBlacklist(objectId);
+        adminOperationLogService.createAdminOperationLog(userId, new Date(), "user", "将用户" + objectId + "从黑名单移除");
         return true;
     }
 
     @ApiOperation(value = "根据userId判断用户是否在黑名单中")
     @ApiImplicitParams({
-            @ApiImplicitParam(paramType = "query", name = SwaggerParameter.Authorization, value = "token", dataType = "String"),
-            @ApiImplicitParam(paramType = "query", name = "userId", value = "用户Id", required = true, dataType = "String"),
+            @ApiImplicitParam(paramType = "query", name = "userId", value = "当前身份的管理员用户Id", required = true, dataType = "String"),
+            @ApiImplicitParam(paramType = "query", name = "objectId", value = "用户Id(即操作对象的ID)", required = true, dataType = "String"),
     })
     @GetMapping("/IsInBlacklist")
-    public Object isInBlacklist(String userId) {
-        return blacklistService.findByUserId(userId) != null;
+    public Object isInBlacklist(String userId, String objectId) {
+        adminOperationLogService.createAdminOperationLog(userId, new Date(), "user", "查询用户" + objectId + "是否在黑名单");
+        return blacklistService.findByUserId(objectId) != null;
     }
 
     @ApiOperation(value = "获取黑名单中所有用户")
-    @ApiImplicitParam(paramType = "query", name = SwaggerParameter.Authorization, dataType = "String")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query", name = "userId", value = "当前身份的管理员用户Id", required = true, dataType = "String")
+    })
     @GetMapping("/GetAllUsersFromBlacklist")
-    public Object getAllUsersFromBlacklist() {
+    public Object getAllUsersFromBlacklist(String userId) {
+        adminOperationLogService.createAdminOperationLog(userId, new Date(), "user", "获取所有黑名单");
         return blacklistService.findAll();
     }
 
