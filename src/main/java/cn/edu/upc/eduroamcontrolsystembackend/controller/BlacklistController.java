@@ -1,5 +1,6 @@
 package cn.edu.upc.eduroamcontrolsystembackend.controller;
 
+import cn.edu.upc.eduroamcontrolsystembackend.dto.MyDateFormat;
 import cn.edu.upc.eduroamcontrolsystembackend.dto.SwaggerParameter;
 import cn.edu.upc.eduroamcontrolsystembackend.service.AdminOperationLogService;
 import cn.edu.upc.eduroamcontrolsystembackend.service.BlacklistService;
@@ -41,7 +42,7 @@ public class BlacklistController {
     @PostMapping("/AddUserToBlacklist")
     public Object addUserToBlacklist(String userId, String objectId) {
         blacklistService.createBlacklist(objectId);
-        adminOperationLogService.createAdminOperationLog(userId, new Date(), "user", "添加用户" + objectId + "到黑名单");
+        adminOperationLogService.createAdminOperationLog(userId, new MyDateFormat().formattedDate(), "user", "添加用户" + objectId + "到黑名单");
         return true;
     }
 
@@ -53,7 +54,7 @@ public class BlacklistController {
     @PostMapping("/DeleteUserFromBlackList")
     public Object deleteUserFromBlacklist(String userId, String objectId) {
         blacklistService.deleteBlacklist(objectId);
-        adminOperationLogService.createAdminOperationLog(userId, new Date(), "user", "将用户" + objectId + "从黑名单移除");
+        adminOperationLogService.createAdminOperationLog(userId, new MyDateFormat().formattedDate(), "user", "将用户" + objectId + "从黑名单移除");
         return true;
     }
 
@@ -64,7 +65,7 @@ public class BlacklistController {
     })
     @GetMapping("/IsInBlacklist")
     public Object isInBlacklist(String userId, String objectId) {
-        adminOperationLogService.createAdminOperationLog(userId, new Date(), "user", "查询用户" + objectId + "是否在黑名单");
+        adminOperationLogService.createAdminOperationLog(userId, new MyDateFormat().formattedDate(), "user", "查询用户" + objectId + "是否在黑名单");
         return blacklistService.findByUserId(objectId) != null;
     }
 
@@ -74,9 +75,7 @@ public class BlacklistController {
     })
     @GetMapping("/GetAllUsersFromBlacklist")
     public Object getAllUsersFromBlacklist(String userId) {
-        adminOperationLogService.createAdminOperationLog(userId, new Date(), "user", "获取所有黑名单");
+        adminOperationLogService.createAdminOperationLog(userId, new MyDateFormat().formattedDate(), "user", "获取所有黑名单");
         return blacklistService.findAll();
     }
-
-
 }

@@ -27,7 +27,7 @@ public class AdminOperationLogService {
      * @param level         the level, 操作级别, 系统设置级别/用户权限设置级别
      * @param operation     the operation, 具体操作内容
      */
-    public void createAdminOperationLog(String adminId, Date operatingTime, String level, String operation) {
+    public void createAdminOperationLog(String adminId, String operatingTime, String level, String operation) {
         AdminOperationLog adminOperationLog = new AdminOperationLog(adminId, operatingTime, level, operation);
         adminOperationLog.setAdminId(adminId);
         adminOperationLog.setOperatingTime(operatingTime);
@@ -39,6 +39,8 @@ public class AdminOperationLogService {
     public Iterable<AdminOperationLog> findAllByAdminId(String adminId) {
         return adminOperationLogDAO.findAllByAdminId(adminId);
     }
+
+
 
 
 }

@@ -1,5 +1,6 @@
 package cn.edu.upc.eduroamcontrolsystembackend.controller;
 
+import cn.edu.upc.eduroamcontrolsystembackend.dto.MyDateFormat;
 import cn.edu.upc.eduroamcontrolsystembackend.dto.SwaggerParameter;
 import cn.edu.upc.eduroamcontrolsystembackend.service.AdminOperationLogService;
 import cn.edu.upc.eduroamcontrolsystembackend.service.UserUsageLogService;
@@ -41,7 +42,7 @@ public class UserUsageLogController {
     })
     @GetMapping("/GetAllUserUsageLogsByUserId")
     public Object getAllUserUsageLogsByUserId(String userId, String objectId) {
-        adminOperationLogService.createAdminOperationLog(userId, new Date(), "user", "查询用户" + objectId + "所有的操作日志");
+        adminOperationLogService.createAdminOperationLog(userId, new MyDateFormat().formattedDate(), "user", "查询用户" + objectId + "所有的操作日志");
         return userUsageLogService.findAllByUserId(objectId);
     }
 }

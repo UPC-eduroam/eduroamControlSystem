@@ -18,14 +18,14 @@ public class AdminOperationLog {
     private int id;
 
     private String adminId;
-    private Date operatingTime;
+    private String operatingTime;
     private String level;
     private String operation;
 
     public AdminOperationLog() {
     }
 
-    public AdminOperationLog(String adminName, Date operatingTime, String level, String operation) {
+    public AdminOperationLog(String adminName, String operatingTime, String level, String operation) {
         this.adminId = adminName;
         this.operatingTime = operatingTime;
         this.level = level;
@@ -44,11 +44,11 @@ public class AdminOperationLog {
         this.adminId = adminId;
     }
 
-    public Date getOperatingTime() {
+    public String getOperatingTime() {
         return operatingTime;
     }
 
-    public void setOperatingTime(Date operatingTime) {
+    public void setOperatingTime(String operatingTime) {
         this.operatingTime = operatingTime;
     }
 
