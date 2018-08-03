@@ -14,8 +14,6 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 
-import javax.servlet.http.HttpServletRequest;
-import java.util.Date;
 
 /**
  * BlackListController
@@ -24,7 +22,7 @@ import java.util.Date;
  * @date 2018/05/02
  */
 
-//@PreAuthorize("hasRole('ADMIN')")
+@PreAuthorize("hasRole('ADMIN')")
 @RestController
 @RequestMapping("BlackListController")
 public class BlacklistController {

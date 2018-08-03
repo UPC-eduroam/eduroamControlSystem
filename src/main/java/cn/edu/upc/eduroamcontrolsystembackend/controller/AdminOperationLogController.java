@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @date 2018/05/02
  */
 
-//@PreAuthorize("hasRole('ADMIN')")
+@PreAuthorize("hasRole('ADMIN')")
 @RestController
 @RequestMapping("AdminOperationLogController")
 public class AdminOperationLogController {

@@ -25,7 +25,7 @@ import java.util.Date;
  */
 
 
-//@PreAuthorize("hasRole('ADMIN')")
+@PreAuthorize("hasRole('ADMIN')")
 @RestController
 @RequestMapping("UserUsageLogController")
 public class UserUsageLogController {
