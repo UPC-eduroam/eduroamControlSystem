@@ -1,4 +1,4 @@
-package cn.edu.upc.eduroamcontrolsystembackend.dto;
+package cn.edu.upc.eduroamcontrolsystembackend.util;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
