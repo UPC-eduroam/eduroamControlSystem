@@ -67,7 +67,11 @@ public class AuthenticationController {
     //刷新token接口
     @RequestMapping(value = "/token/refresh", method = RequestMethod.GET)
     public ResponseEntity<?> refreshAndGetAuthenticationToken(HttpServletRequest request) {
+
         String token = request.getHeader(tokenHeader);
+
+        logger.info("refresh接口接收到刷新请求, token: " + token);
+
         String username = jwtTokenUtil.getUserIdFromToken(token);
         JwtUser user = (JwtUser) userDetailsService.loadUserByUsername(username);
 

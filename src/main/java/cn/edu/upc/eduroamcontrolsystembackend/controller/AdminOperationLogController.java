@@ -1,6 +1,6 @@
 package cn.edu.upc.eduroamcontrolsystembackend.controller;
 
-import cn.edu.upc.eduroamcontrolsystembackend.dto.MyDateFormat;
+import cn.edu.upc.eduroamcontrolsystembackend.util.MyDateFormat;
 import cn.edu.upc.eduroamcontrolsystembackend.service.AdminOperationLogService;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;

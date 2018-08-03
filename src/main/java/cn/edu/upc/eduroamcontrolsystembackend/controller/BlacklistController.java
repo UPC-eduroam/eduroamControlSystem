@@ -1,18 +1,20 @@
 package cn.edu.upc.eduroamcontrolsystembackend.controller;
 
-import cn.edu.upc.eduroamcontrolsystembackend.dto.MyDateFormat;
-import cn.edu.upc.eduroamcontrolsystembackend.dto.SwaggerParameter;
+import cn.edu.upc.eduroamcontrolsystembackend.dto.ResponseMessage;
+import cn.edu.upc.eduroamcontrolsystembackend.util.GetUserAuthority;
+import cn.edu.upc.eduroamcontrolsystembackend.util.MyDateFormat;
 import cn.edu.upc.eduroamcontrolsystembackend.service.AdminOperationLogService;
 import cn.edu.upc.eduroamcontrolsystembackend.service.BlacklistService;
+import cn.edu.upc.eduroamcontrolsystembackend.service.UserService;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
-import io.swagger.annotations.ApiOperation;
 
 
 /**
@@ -27,10 +29,16 @@ import io.swagger.annotations.ApiOperation;
 @RequestMapping("BlackListController")
 public class BlacklistController {
     @Autowired
+    private UserService userService;
+
+    @Autowired
     private BlacklistService blacklistService;
 
     @Autowired
     private AdminOperationLogService adminOperationLogService;
+
+    @Autowired
+    private GetUserAuthority getUserAuthority;
 
     @ApiOperation(value = "添加用户到黑名单")
     @ApiImplicitParams({
@@ -39,6 +47,9 @@ public class BlacklistController {
     })
     @PostMapping("/AddUserToBlacklist")
     public Object addUserToBlacklist(String userId, String objectId) {
+        if (getUserAuthority.getAuthorityByUserId(objectId).contains("ADMIN")) {
+            return new ResponseMessage(-1, "无法将管理员加入黑名单");
+        }
         blacklistService.createBlacklist(objectId);
         adminOperationLogService.createAdminOperationLog(userId, new MyDateFormat().formattedDate(), "user", "添加用户" + objectId + "到黑名单");
         return true;

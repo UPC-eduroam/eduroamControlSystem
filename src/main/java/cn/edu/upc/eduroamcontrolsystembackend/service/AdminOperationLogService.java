@@ -5,8 +5,6 @@ import cn.edu.upc.eduroamcontrolsystembackend.model.AdminOperationLog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-
 /**
  * AdminOperationLogService
  *

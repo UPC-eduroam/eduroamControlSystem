@@ -1,5 +1,7 @@
 package cn.edu.upc.eduroamcontrolsystembackend.security.service;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
@@ -22,9 +24,10 @@ import io.jsonwebtoken.SignatureAlgorithm;
 @Component
 public class JwtTokenUtil implements Serializable {
 
+    private final Log logger = LogFactory.getLog(this.getClass());
+
     static final String CLAIM_KEY_USERID = "123";
     static final String CLAIM_KEY_CREATED = "created";
-
 
     @Value("${jwt.secret}")
     private String secret;
@@ -100,8 +103,8 @@ public class JwtTokenUtil implements Serializable {
     private String doGenerateToken(Map<String, Object> claims) {
         final Date createdDate = (Date) claims.get(CLAIM_KEY_CREATED);
         final Date expirationDate = new Date(createdDate.getTime() + expiration * 1000);
-
-        System.out.println("doGenerateToken " + createdDate);
+        String userId = claims.get(CLAIM_KEY_USERID).toString();
+        logger.info("doGenerateToken for user: " + userId);
 
         return Jwts.builder()
                 .setClaims(claims)
