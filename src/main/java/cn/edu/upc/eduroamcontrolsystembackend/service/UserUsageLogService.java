@@ -1,7 +1,7 @@
 package cn.edu.upc.eduroamcontrolsystembackend.service;
 
-import cn.edu.upc.eduroamcontrolsystembackend.dao.UserUsageLogDAO;
-import cn.edu.upc.eduroamcontrolsystembackend.model.UserUsageLog;
+import cn.edu.upc.eduroamcontrolsystembackend.dao.primary.UserUsageLogDAO;
+import cn.edu.upc.eduroamcontrolsystembackend.model.primary.UserUsageLog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

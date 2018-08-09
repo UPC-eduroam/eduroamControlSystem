@@ -1,7 +1,7 @@
 package cn.edu.upc.eduroamcontrolsystembackend.security.service;
 
-import cn.edu.upc.eduroamcontrolsystembackend.model.Authority;
-import cn.edu.upc.eduroamcontrolsystembackend.model.User;
+import cn.edu.upc.eduroamcontrolsystembackend.model.primary.Authority;
+import cn.edu.upc.eduroamcontrolsystembackend.model.primary.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 

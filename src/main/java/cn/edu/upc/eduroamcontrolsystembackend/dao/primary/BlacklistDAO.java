@@ -1,6 +1,6 @@
-package cn.edu.upc.eduroamcontrolsystembackend.dao;
+package cn.edu.upc.eduroamcontrolsystembackend.dao.primary;
 
-import cn.edu.upc.eduroamcontrolsystembackend.model.Blacklist;
+import cn.edu.upc.eduroamcontrolsystembackend.model.primary.Blacklist;
 import org.springframework.data.repository.CrudRepository;
 
 /**

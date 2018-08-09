@@ -1,4 +1,4 @@
-package cn.edu.upc.eduroamcontrolsystembackend.model;
+package cn.edu.upc.eduroamcontrolsystembackend.model.primary;
 
 import javax.persistence.*;
 import java.util.Date;

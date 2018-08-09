@@ -1,10 +1,10 @@
 package cn.edu.upc.eduroamcontrolsystembackend.security.config;
 
-import cn.edu.upc.eduroamcontrolsystembackend.dao.AuthorityDAO;
-import cn.edu.upc.eduroamcontrolsystembackend.dao.UserDAO;
-import cn.edu.upc.eduroamcontrolsystembackend.model.Authority;
-import cn.edu.upc.eduroamcontrolsystembackend.model.AuthorityType;
-import cn.edu.upc.eduroamcontrolsystembackend.model.User;
+import cn.edu.upc.eduroamcontrolsystembackend.dao.primary.AuthorityDAO;
+import cn.edu.upc.eduroamcontrolsystembackend.dao.primary.UserDAO;
+import cn.edu.upc.eduroamcontrolsystembackend.model.primary.Authority;
+import cn.edu.upc.eduroamcontrolsystembackend.model.primary.AuthorityType;
+import cn.edu.upc.eduroamcontrolsystembackend.model.primary.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;

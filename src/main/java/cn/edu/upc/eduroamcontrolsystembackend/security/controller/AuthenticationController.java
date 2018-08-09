@@ -1,8 +1,8 @@
 package cn.edu.upc.eduroamcontrolsystembackend.security.controller;
 
-import cn.edu.upc.eduroamcontrolsystembackend.dao.UserDAO;
+import cn.edu.upc.eduroamcontrolsystembackend.dao.primary.UserDAO;
 import cn.edu.upc.eduroamcontrolsystembackend.dto.ResponseMessage;
-import cn.edu.upc.eduroamcontrolsystembackend.model.User;
+import cn.edu.upc.eduroamcontrolsystembackend.model.primary.User;
 import cn.edu.upc.eduroamcontrolsystembackend.security.service.JwtTokenUtil;
 import cn.edu.upc.eduroamcontrolsystembackend.security.service.JwtUser;
 import org.springframework.beans.factory.annotation.Autowired;

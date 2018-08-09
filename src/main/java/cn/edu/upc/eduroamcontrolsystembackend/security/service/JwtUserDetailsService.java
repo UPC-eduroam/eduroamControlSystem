@@ -1,7 +1,7 @@
 package cn.edu.upc.eduroamcontrolsystembackend.security.service;
 
-import cn.edu.upc.eduroamcontrolsystembackend.dao.UserDAO;
-import cn.edu.upc.eduroamcontrolsystembackend.model.User;
+import cn.edu.upc.eduroamcontrolsystembackend.dao.primary.UserDAO;
+import cn.edu.upc.eduroamcontrolsystembackend.model.primary.User;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;

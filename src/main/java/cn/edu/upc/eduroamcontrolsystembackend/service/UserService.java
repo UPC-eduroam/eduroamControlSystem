@@ -1,7 +1,7 @@
 package cn.edu.upc.eduroamcontrolsystembackend.service;
 
-import cn.edu.upc.eduroamcontrolsystembackend.dao.UserDAO;
-import cn.edu.upc.eduroamcontrolsystembackend.model.User;
+import cn.edu.upc.eduroamcontrolsystembackend.dao.primary.UserDAO;
+import cn.edu.upc.eduroamcontrolsystembackend.model.primary.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

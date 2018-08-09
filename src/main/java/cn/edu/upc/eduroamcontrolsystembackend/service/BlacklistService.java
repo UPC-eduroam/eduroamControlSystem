@@ -1,7 +1,7 @@
 package cn.edu.upc.eduroamcontrolsystembackend.service;
 
-import cn.edu.upc.eduroamcontrolsystembackend.dao.BlacklistDAO;
-import cn.edu.upc.eduroamcontrolsystembackend.model.Blacklist;
+import cn.edu.upc.eduroamcontrolsystembackend.dao.primary.BlacklistDAO;
+import cn.edu.upc.eduroamcontrolsystembackend.model.primary.Blacklist;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

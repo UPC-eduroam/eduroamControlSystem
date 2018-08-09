@@ -1,6 +1,6 @@
-package cn.edu.upc.eduroamcontrolsystembackend.dao;
+package cn.edu.upc.eduroamcontrolsystembackend.dao.primary;
 
-import cn.edu.upc.eduroamcontrolsystembackend.model.User;
+import cn.edu.upc.eduroamcontrolsystembackend.model.primary.User;
 import org.springframework.data.repository.CrudRepository;
 
 /**

@@ -1,7 +1,6 @@
-package cn.edu.upc.eduroamcontrolsystembackend.dao;
+package cn.edu.upc.eduroamcontrolsystembackend.dao.primary;
 
-import cn.edu.upc.eduroamcontrolsystembackend.model.AdminOperationLog;
-import cn.edu.upc.eduroamcontrolsystembackend.model.UserUsageLog;
+import cn.edu.upc.eduroamcontrolsystembackend.model.primary.UserUsageLog;
 import org.springframework.data.repository.CrudRepository;
 
 /**

@@ -1,7 +1,7 @@
-package cn.edu.upc.eduroamcontrolsystembackend.dao;
+package cn.edu.upc.eduroamcontrolsystembackend.dao.primary;
 
-import cn.edu.upc.eduroamcontrolsystembackend.model.Authority;
-import cn.edu.upc.eduroamcontrolsystembackend.model.AuthorityType;
+import cn.edu.upc.eduroamcontrolsystembackend.model.primary.Authority;
+import cn.edu.upc.eduroamcontrolsystembackend.model.primary.AuthorityType;
 import org.springframework.data.repository.CrudRepository;
 
 /**
