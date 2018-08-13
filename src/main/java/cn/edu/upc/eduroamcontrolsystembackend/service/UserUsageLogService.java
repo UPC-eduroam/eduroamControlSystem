@@ -20,15 +20,12 @@ public class UserUsageLogService {
     /**
      * 创建用户使用日志
      *
-     * @param userId    the user id
-     * @param loginTime the login time, 在校外登录eduroam的时间
-     * @param orgDomain the orgDomain, 用户所在机构的域名
+     * @param userId        the user id
+     * @param operatingTime the operating time, 操作的时间
+     * @param operation,    具体操作内容
      */
-    public void createUserUsageLog(String userId, String loginTime, String orgDomain) {
-        UserUsageLog userUsageLog = new UserUsageLog(userId, loginTime, orgDomain);
-        userUsageLog.setUserId(userId);
-        userUsageLog.setLoginTime(loginTime);
-        userUsageLog.setOrgDomain(orgDomain);
+    public void createUserUsageLog(String userId, String operatingTime, String operation) {
+        UserUsageLog userUsageLog = new UserUsageLog(userId, operatingTime, operation);
         userUsageLogDAO.save(userUsageLog);
     }
 
@@ -36,8 +33,8 @@ public class UserUsageLogService {
         return userUsageLogDAO.findAllByUserId(userId);
     }
 
-    public Iterable<UserUsageLog> findAllByUserIdAndLoginTimeBetween(String userId, String startDate, String endDate) {
-        return userUsageLogDAO.findAllByUserIdAndLoginTimeBetween(userId, startDate, endDate);
+    public Iterable<UserUsageLog> findAllByUserIdAndOperatingTimeBetween(String userId, String startDate, String endDate) {
+        return userUsageLogDAO.findAllByUserIdAndOperatingTimeBetween(userId, startDate, endDate);
     }
 
 }

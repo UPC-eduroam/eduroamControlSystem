@@ -1,11 +1,10 @@
 package cn.edu.upc.eduroamcontrolsystembackend.controller;
 
 import cn.edu.upc.eduroamcontrolsystembackend.dto.ResponseMessage;
+import cn.edu.upc.eduroamcontrolsystembackend.service.BlacklistService;
+import cn.edu.upc.eduroamcontrolsystembackend.service.UserUsageLogService;
 import cn.edu.upc.eduroamcontrolsystembackend.util.GetUserAuthority;
 import cn.edu.upc.eduroamcontrolsystembackend.util.MyDateFormat;
-import cn.edu.upc.eduroamcontrolsystembackend.service.AdminOperationLogService;
-import cn.edu.upc.eduroamcontrolsystembackend.service.BlacklistService;
-import cn.edu.upc.eduroamcontrolsystembackend.service.UserService;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
@@ -29,13 +28,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("BlackListController")
 public class BlacklistController {
     @Autowired
-    private UserService userService;
+    private UserUsageLogService userUsageLogService;
 
     @Autowired
     private BlacklistService blacklistService;
-
-    @Autowired
-    private AdminOperationLogService adminOperationLogService;
 
     @Autowired
     private GetUserAuthority getUserAuthority;
@@ -51,7 +47,7 @@ public class BlacklistController {
             return new ResponseMessage(-1, "无法将管理员加入黑名单");
         }
         blacklistService.createBlacklist(objectId);
-        adminOperationLogService.createAdminOperationLog(userId, new MyDateFormat().formattedDate(), "user", "添加用户" + objectId + "到黑名单");
+        userUsageLogService.createUserUsageLog(userId, new MyDateFormat().formattedDate(), "添加用户" + objectId + "到黑名单");
         return true;
     }
 
@@ -63,7 +59,7 @@ public class BlacklistController {
     @PostMapping("/DeleteUserFromBlackList")
     public Object deleteUserFromBlacklist(String userId, String objectId) {
         blacklistService.deleteBlacklist(objectId);
-        adminOperationLogService.createAdminOperationLog(userId, new MyDateFormat().formattedDate(), "user", "将用户" + objectId + "从黑名单移除");
+        userUsageLogService.createUserUsageLog(userId, new MyDateFormat().formattedDate(), "将用户" + objectId + "从黑名单移除");
         return true;
     }
 
@@ -74,7 +70,7 @@ public class BlacklistController {
     })
     @GetMapping("/IsInBlacklist")
     public Object isInBlacklist(String userId, String objectId) {
-        adminOperationLogService.createAdminOperationLog(userId, new MyDateFormat().formattedDate(), "user", "查询用户" + objectId + "是否在黑名单");
+        userUsageLogService.createUserUsageLog(userId, new MyDateFormat().formattedDate(), "查询用户" + objectId + "是否在黑名单");
         return blacklistService.findByUserId(objectId) != null;
     }
 
@@ -84,7 +80,7 @@ public class BlacklistController {
     })
     @GetMapping("/GetAllUsersFromBlacklist")
     public Object getAllUsersFromBlacklist(String userId) {
-        adminOperationLogService.createAdminOperationLog(userId, new MyDateFormat().formattedDate(), "user", "获取所有黑名单");
+        userUsageLogService.createUserUsageLog(userId, new MyDateFormat().formattedDate(), "获取所有黑名单");
         return blacklistService.findAll();
     }
 }

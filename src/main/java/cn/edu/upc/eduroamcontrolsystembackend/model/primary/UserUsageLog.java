@@ -3,7 +3,7 @@ package cn.edu.upc.eduroamcontrolsystembackend.model.primary;
 import javax.persistence.*;
 
 /**
- * 用户在校外使用eduroam的使用情况记录表
+ * 所有用户操作日志记录
  *
  * @author jay
  * @date 2018/05/02
@@ -17,16 +17,16 @@ public class UserUsageLog {
     private int id;
 
     private String userId;
-    private String loginTime;
-    private String orgDomain;
+    private String operatingTime;
+    private String operation;
 
     public UserUsageLog() {
     }
 
-    public UserUsageLog(String userId, String loginTime, String orgDomain) {
+    public UserUsageLog(String userId, String operatingTime, String operation) {
         this.userId = userId;
-        this.loginTime = loginTime;
-        this.orgDomain = orgDomain;
+        this.operatingTime = operatingTime;
+        this.operation = operation;
     }
 
     public int getId() {
@@ -41,19 +41,19 @@ public class UserUsageLog {
         this.userId = userId;
     }
 
-    public String getLoginTime() {
-        return loginTime;
+    public String getOperatingTime() {
+        return operatingTime;
     }
 
-    public void setLoginTime(String loginTime) {
-        this.loginTime = loginTime;
+    public void setOperatingTime(String operatingTime) {
+        this.operatingTime = operatingTime;
     }
 
-    public String getOrgDomain() {
-        return orgDomain;
+    public String getOperation() {
+        return operation;
     }
 
-    public void setOrgDomain(String orgDomain) {
-        this.orgDomain = orgDomain;
+    public void setOperation(String operation) {
+        this.operation = operation;
     }
 }

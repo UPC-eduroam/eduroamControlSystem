@@ -1,8 +1,7 @@
 package cn.edu.upc.eduroamcontrolsystembackend.controller;
 
-import cn.edu.upc.eduroamcontrolsystembackend.util.MyDateFormat;
-import cn.edu.upc.eduroamcontrolsystembackend.service.AdminOperationLogService;
 import cn.edu.upc.eduroamcontrolsystembackend.service.UserUsageLogService;
+import cn.edu.upc.eduroamcontrolsystembackend.util.MyDateFormat;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
@@ -27,9 +26,6 @@ public class UserUsageLogController {
     @Autowired
     private UserUsageLogService userUsageLogService;
 
-    @Autowired
-    private AdminOperationLogService adminOperationLogService;
-
     @ApiOperation("获取指定用户的所有操作记录")
     @ApiImplicitParams({
             @ApiImplicitParam(paramType = "query", name = "userId", value = "当前身份的管理员用户Id", required = true, dataType = "String"),
@@ -39,8 +35,7 @@ public class UserUsageLogController {
     })
     @GetMapping("/GetUserUsageLogsByUserIdAndDate")
     public Object GetUserUsageLogsByUserIdAndDate(String userId, String objectId, String startDate, String endDate) {
-        adminOperationLogService.createAdminOperationLog(userId, new MyDateFormat().formattedDate(), "user", "查询用户 " + objectId + " 的操作日志");
-        return userUsageLogService.findAllByUserIdAndLoginTimeBetween(objectId, startDate, endDate);
+        userUsageLogService.createUserUsageLog(userId, new MyDateFormat().formattedDate(), "查询用户 " + objectId + " 的操作日志");
+        return userUsageLogService.findAllByUserIdAndOperatingTimeBetween(objectId, startDate, endDate);
     }
 }
-

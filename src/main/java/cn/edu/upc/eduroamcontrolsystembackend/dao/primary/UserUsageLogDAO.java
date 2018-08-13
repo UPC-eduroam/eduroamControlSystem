@@ -13,5 +13,5 @@ import org.springframework.data.repository.CrudRepository;
 public interface UserUsageLogDAO extends CrudRepository<UserUsageLog, Integer> {
     Iterable<UserUsageLog> findAllByUserId(String userId);
 
-    Iterable<UserUsageLog> findAllByUserIdAndLoginTimeBetween(String userId, String startDate, String endDate);
+    Iterable<UserUsageLog> findAllByUserIdAndOperatingTimeBetween(String userId, String startDate, String endDate);
 }
