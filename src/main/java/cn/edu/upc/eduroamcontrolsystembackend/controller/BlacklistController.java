@@ -4,6 +4,7 @@ import cn.edu.upc.eduroamcontrolsystembackend.dto.ResponseMessage;
 import cn.edu.upc.eduroamcontrolsystembackend.service.BlacklistService;
 import cn.edu.upc.eduroamcontrolsystembackend.service.UserUsageLogService;
 import cn.edu.upc.eduroamcontrolsystembackend.util.GetUserAuthority;
+import cn.edu.upc.eduroamcontrolsystembackend.util.GetUserIdFromRequest;
 import cn.edu.upc.eduroamcontrolsystembackend.util.MyDateFormat;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -15,6 +16,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
+
 
 /**
  * BlackListController
@@ -23,64 +26,64 @@ import org.springframework.web.bind.annotation.RestController;
  * @date 2018/05/02
  */
 
-@PreAuthorize("hasRole('ADMIN')")
 @RestController
 @RequestMapping("BlackListController")
+//@PreAuthorize("hasRole('ADMIN')")
 public class BlacklistController {
     @Autowired
+    private HttpServletRequest request;
+    @Autowired
+    private GetUserIdFromRequest getUserIdFromRequest;
+    @Autowired
     private UserUsageLogService userUsageLogService;
-
     @Autowired
     private BlacklistService blacklistService;
-
     @Autowired
     private GetUserAuthority getUserAuthority;
 
     @ApiOperation(value = "添加用户到黑名单")
     @ApiImplicitParams({
-            @ApiImplicitParam(paramType = "query", name = "userId", value = "当前身份的管理员用户Id", required = true, dataType = "String"),
             @ApiImplicitParam(paramType = "query", name = "objectId", value = "需要添加进黑名单的用户Id(即操作对象的ID)", required = true, dataType = "String")
     })
     @PostMapping("/AddUserToBlacklist")
-    public Object addUserToBlacklist(String userId, String objectId) {
+    public Object addUserToBlacklist(String objectId) {
+        String adminId = getUserIdFromRequest.getUserId(request);
         if (getUserAuthority.getAuthorityByUserId(objectId).contains("ADMIN")) {
             return new ResponseMessage(-1, "无法将管理员加入黑名单");
         }
         blacklistService.createBlacklist(objectId);
-        userUsageLogService.createUserUsageLog(userId, new MyDateFormat().formattedDate(), "添加用户" + objectId + "到黑名单");
+        userUsageLogService.createUserUsageLog(adminId, new MyDateFormat().formattedDate(), "添加用户" + objectId + "到黑名单");
         return true;
     }
 
     @ApiOperation(value = "将用户从黑名单移除")
     @ApiImplicitParams({
-            @ApiImplicitParam(paramType = "query", name = "userId", value = "当前身份的管理员用户Id", required = true, dataType = "String"),
             @ApiImplicitParam(paramType = "query", name = "objectId", value = "需要移除的用户Id(即操作对象的ID)", required = true, dataType = "String")
     })
     @PostMapping("/DeleteUserFromBlackList")
-    public Object deleteUserFromBlacklist(String userId, String objectId) {
+    public Object deleteUserFromBlacklist(String objectId) {
+        String adminId = getUserIdFromRequest.getUserId(request);
         blacklistService.deleteBlacklist(objectId);
-        userUsageLogService.createUserUsageLog(userId, new MyDateFormat().formattedDate(), "将用户" + objectId + "从黑名单移除");
+        userUsageLogService.createUserUsageLog(adminId, new MyDateFormat().formattedDate(), "将用户" + objectId + "从黑名单移除");
         return true;
     }
 
     @ApiOperation(value = "根据userId判断用户是否在黑名单中")
     @ApiImplicitParams({
-            @ApiImplicitParam(paramType = "query", name = "userId", value = "当前身份的管理员用户Id", required = true, dataType = "String"),
             @ApiImplicitParam(paramType = "query", name = "objectId", value = "用户Id(即操作对象的ID)", required = true, dataType = "String"),
     })
     @GetMapping("/IsInBlacklist")
-    public Object isInBlacklist(String userId, String objectId) {
-        userUsageLogService.createUserUsageLog(userId, new MyDateFormat().formattedDate(), "查询用户" + objectId + "是否在黑名单");
+    public Object isInBlacklist(String objectId) {
+        String adminId = getUserIdFromRequest.getUserId(request);
+        userUsageLogService.createUserUsageLog(adminId, new MyDateFormat().formattedDate(), "查询用户" + objectId + "是否在黑名单");
         return blacklistService.findByUserId(objectId) != null;
     }
 
     @ApiOperation(value = "获取黑名单中所有用户")
-    @ApiImplicitParams({
-            @ApiImplicitParam(paramType = "query", name = "userId", value = "当前身份的管理员用户Id", required = true, dataType = "String")
-    })
     @GetMapping("/GetAllUsersFromBlacklist")
-    public Object getAllUsersFromBlacklist(String userId) {
-        userUsageLogService.createUserUsageLog(userId, new MyDateFormat().formattedDate(), "获取所有黑名单");
+    public Object getAllUsersFromBlacklist() {
+        String adminId = getUserIdFromRequest.getUserId(request);
+        userUsageLogService.createUserUsageLog(adminId, new MyDateFormat().formattedDate(), "获取所有黑名单");
         return blacklistService.findAll();
     }
 }
