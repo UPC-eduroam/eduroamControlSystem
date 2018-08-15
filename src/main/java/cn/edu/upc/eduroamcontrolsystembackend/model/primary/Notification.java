@@ -19,6 +19,9 @@ public class Notification {
     private boolean viewed;
     private boolean deleted;
 
+    public Notification() {
+    }
+
     public Notification(String comeFrom, String sendTo, String message) {
         this.comeFrom = comeFrom;
         this.sendTo = sendTo;
