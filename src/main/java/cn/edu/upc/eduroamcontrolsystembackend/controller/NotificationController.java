@@ -6,25 +6,31 @@ import cn.edu.upc.eduroamcontrolsystembackend.model.primary.Notification;
 import cn.edu.upc.eduroamcontrolsystembackend.service.NotificationService;
 import cn.edu.upc.eduroamcontrolsystembackend.service.UserUsageLogService;
 import cn.edu.upc.eduroamcontrolsystembackend.util.GetUserAuthority;
+import cn.edu.upc.eduroamcontrolsystembackend.util.GetUserIdFromRequest;
 import cn.edu.upc.eduroamcontrolsystembackend.util.MyDateFormat;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * Created by jay on 2018/08/12
  */
 
-@PreAuthorize("hasAnyRole('ADMIN','USER')")
 @RestController
 @RequestMapping("NotificationController")
+//@PreAuthorize("hasAnyRole('ADMIN','USER')")
 public class NotificationController {
+    @Autowired
+    private HttpServletRequest request;
+    @Autowired
+    private GetUserIdFromRequest getUserIdFromRequest;
     @Autowired
     private NotificationService notificationService;
     @Autowired
@@ -34,38 +40,46 @@ public class NotificationController {
     @Autowired
     private UserUsageLogService userUsageLogService;
 
-    @ApiOperation(value = "发送消息给指定用户(学生发送请求给管理员/管理员发送消息给学生)")
+    @ApiOperation(value = "发送消息给指定用户(限制:学生只能发送给管理员)")
     @ApiImplicitParams({
-            @ApiImplicitParam(paramType = "query", name = "comeFrom", value = "发送消息的用户Id", required = true, dataType = "String"),
-            @ApiImplicitParam(paramType = "query", name = "sendTo", value = "接受消息方的用户Id(学生发送给管理员, 则这里直接填Admin)", required = true, dataType = "String"),
+            @ApiImplicitParam(paramType = "query", name = "receiver", value = "接受方的用户Id(学生发送给管理员, 则这里直接填ADMIN)", required = true, dataType = "String"),
             @ApiImplicitParam(paramType = "query", name = "message", value = "消息内容", required = true, dataType = "String"),
     })
     @PostMapping("/CreateNotification")
-    public Object createNotification(String comeFrom, String sendTo, String message) {
-        if (getUserAuthority.getAuthorityByUserId(comeFrom).contains("USER") && getUserAuthority.getAuthorityByUserId(sendTo).contains("USER")) {
+    public Object createNotification(String receiver, String message) {
+        String sender = getUserIdFromRequest.getUserId(request);
+
+        System.out.println("receiver is -> " + receiver);
+        System.out.println("equals?? -> " + receiver.equals("ADMIN"));
+
+
+        if (getUserAuthority.getAuthorityByUserId(sender).contains("USER") &&
+                !receiver.equals("ADMIN")) {
             return new ResponseMessage(-1, "学生只能给管理员发送消息");
         }
-        notificationService.create(comeFrom, sendTo, message);
-        userUsageLogService.createUserUsageLog(comeFrom, new MyDateFormat().formattedDate(), "发送一条消息给用户" + sendTo);
+        if (getUserAuthority.getAuthorityByUserId(sender).contains("ADMIN"))
+            sender = "ADMIN";
+        notificationService.create(sender, receiver, message);
+        userUsageLogService.createUserUsageLog(sender, new MyDateFormat().formattedDate(), "发送一条消息给用户" + receiver);
         return new ResponseMessage(0, "发送成功");
     }
 
-    @ApiOperation(value = "根据comeFrom获取所有消息(用于获取所有当前用户已经发送的消息),如果是管理员则这里直接填Admin")
-    @ApiImplicitParams({
-            @ApiImplicitParam(paramType = "query", name = "comeFrom", value = "comeFrom所指定的用户Id", required = true, dataType = "String"),
-    })
-    @GetMapping("/GetAllByComeFrom")
-    public Iterable<Notification> getAllByComeFrom(String comeFrom) {
-        return notificationService.findAllByComeFrom(comeFrom);
+    @ApiOperation(value = "获取所有当前用户已经发送的消息(所有管理员视作一个对象)")
+    @GetMapping("/GetAllNotificationsISent")
+    public Iterable<Notification> GetAllNotificationsISent() {
+        String userId = getUserIdFromRequest.getUserId(request);
+        if (getUserAuthority.getAuthorityByUserId(userId).contains("ADMIN"))
+            userId = "ADMIN";
+        return notificationService.findAllBySender(userId);
     }
 
-    @ApiOperation(value = "根据sendTo获取所有消息(用于获取所有发给当前用户的消息)")
-    @ApiImplicitParams({
-            @ApiImplicitParam(paramType = "query", name = "sendTo", value = "sendTo所指定的用户Id(也就是当前用户), 如果是管理员则这里直接填Admin", required = true, dataType = "String"),
-    })
-    @GetMapping("/GetAllBySendTo")
-    public Iterable<Notification> getAllBySendTo(String sendTo) {
-        return notificationService.findAllBySendTo(sendTo);
+    @ApiOperation(value = "获取所有发给当前用户的消息")
+    @GetMapping("/GetAllNotificationsSentToMe")
+    public Iterable<Notification> GetAllNotificationsSentToMe() {
+        String userId = getUserIdFromRequest.getUserId(request);
+        if (getUserAuthority.getAuthorityByUserId(userId).contains("ADMIN"))
+            userId = "ADMIN";
+        return notificationService.findAllByReceiver(userId);
     }
 
     @ApiOperation(value = "将消息标记为已读")
@@ -74,16 +88,19 @@ public class NotificationController {
     })
     @PostMapping("/MarkAsViewed")
     public Object markAsViewed(int notificationId) {
+        String userId = getUserIdFromRequest.getUserId(request);
         try {
-            Notification notification = notificationDAO.findOne(notificationId);
-            notification.setViewed(true);
-            notificationService.update(notification);
+            if (notificationDAO.findOne(notificationId).getReceiver().equals(userId)) {
+                Notification notification = notificationDAO.findOne(notificationId);
+                notification.setViewed(true);
+                notificationService.update(notification);
+            } else
+                return new ResponseMessage(-1, "标记失败");
         } catch (Exception e) {
             return new ResponseMessage(-1, "标记失败, 请稍后再试");
         }
         return new ResponseMessage(0, "标记成功");
     }
-
 
     @ApiOperation(value = "删除指定消息")
     @ApiImplicitParams({
@@ -91,14 +108,22 @@ public class NotificationController {
     })
     @PostMapping("/DeleteNotification")
     public Object markAsDeleted(int notificationId) {
+        String userId = getUserIdFromRequest.getUserId(request);
+        if (getUserAuthority.getAuthorityByUserId(userId).contains("ADMIN"))
+            userId = "ADMIN";
         try {
             Notification notification = notificationDAO.findOne(notificationId);
-            notification.setDeleted(true);
+            if (notification.getReceiver().equals(userId)) {
+                notification.setReceiverDeleted(true);
+            } else if (notification.getSender().equals(userId)) {
+                notification.setSenderDeleted(true);
+            } else {
+                return new ResponseMessage(-1, "删除失败");
+            }
             notificationService.update(notification);
         } catch (Exception e) {
             return new ResponseMessage(-1, "删除失败, 请稍后再试");
         }
         return new ResponseMessage(0, "删除成功");
     }
-
 }

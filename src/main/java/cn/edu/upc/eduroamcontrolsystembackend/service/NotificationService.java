@@ -15,17 +15,17 @@ public class NotificationService {
     @Autowired
     private NotificationDAO notificationDAO;
 
-    public void create(String comeFrom, String sendTo, String message) {
-        Notification notification = new Notification(comeFrom, sendTo, message);
+    public void create(String sender, String receiver, String message) {
+        Notification notification = new Notification(sender, receiver, message);
         notificationDAO.save(notification);
     }
 
-    public Iterable<Notification> findAllBySendTo(String sendTo) {
-        return notificationDAO.findAllBySendToAndDeletedIsFalse(sendTo);
+    public Iterable<Notification> findAllByReceiver(String receiver) {
+        return notificationDAO.findAllByReceiverAndReceiverDeletedIsFalse(receiver);
     }
 
-    public Iterable<Notification> findAllByComeFrom(String comeFrom) {
-        return notificationDAO.findAllByComeFromAndDeletedIsFalse(comeFrom);
+    public Iterable<Notification> findAllBySender(String sender) {
+        return notificationDAO.findAllBySenderAndSenderDeletedIsFalse(sender);
     }
 
     public void update(Notification notification) {

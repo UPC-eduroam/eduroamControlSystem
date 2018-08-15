@@ -13,41 +13,43 @@ public class Notification {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-    private String comeFrom;
-    private String sendTo;
+    private String sender;
+    private String receiver;
     private String message;
     private boolean viewed;
-    private boolean deleted;
+    private boolean receiverDeleted;
+    private boolean senderDeleted;
 
     public Notification() {
     }
 
-    public Notification(String comeFrom, String sendTo, String message) {
-        this.comeFrom = comeFrom;
-        this.sendTo = sendTo;
+    public Notification(String sender, String receiver, String message) {
+        this.sender = sender;
+        this.receiver = receiver;
         this.message = message;
         this.viewed = false;
-        this.deleted = false;
+        this.receiverDeleted = false;
+        this.senderDeleted = false;
     }
 
     public int getId() {
         return id;
     }
 
-    public String getComeFrom() {
-        return comeFrom;
+    public String getSender() {
+        return sender;
     }
 
-    public void setComeFrom(String comeFrom) {
-        this.comeFrom = comeFrom;
+    public void setSender(String sender) {
+        this.sender = sender;
     }
 
-    public String getSendTo() {
-        return sendTo;
+    public String getReceiver() {
+        return receiver;
     }
 
-    public void setSendTo(String sendTo) {
-        this.sendTo = sendTo;
+    public void setReceiver(String receiver) {
+        this.receiver = receiver;
     }
 
     public String getMessage() {
@@ -66,11 +68,19 @@ public class Notification {
         this.viewed = viewed;
     }
 
-    public boolean isDeleted() {
-        return deleted;
+    public boolean isReceiverDeleted() {
+        return receiverDeleted;
     }
 
-    public void setDeleted(boolean deleted) {
-        this.deleted = deleted;
+    public void setReceiverDeleted(boolean receiverDeleted) {
+        this.receiverDeleted = receiverDeleted;
+    }
+
+    public boolean isSenderDeleted() {
+        return senderDeleted;
+    }
+
+    public void setSenderDeleted(boolean senderDeleted) {
+        this.senderDeleted = senderDeleted;
     }
 }

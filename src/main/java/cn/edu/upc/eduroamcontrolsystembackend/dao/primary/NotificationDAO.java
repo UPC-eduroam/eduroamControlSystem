@@ -8,8 +8,7 @@ import org.springframework.data.repository.CrudRepository;
  */
 
 public interface NotificationDAO extends CrudRepository<Notification, Integer> {
-    Iterable<Notification> findAllBySendToAndDeletedIsFalse(String sendTo);
+    Iterable<Notification> findAllByReceiverAndReceiverDeletedIsFalse(String receiver);
 
-    Iterable<Notification> findAllByComeFromAndDeletedIsFalse(String comeFrom);
-
+    Iterable<Notification> findAllBySenderAndSenderDeletedIsFalse(String sender);
 }
