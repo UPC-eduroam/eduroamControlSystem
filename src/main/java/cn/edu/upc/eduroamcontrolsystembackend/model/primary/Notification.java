@@ -1,5 +1,7 @@
 package cn.edu.upc.eduroamcontrolsystembackend.model.primary;
 
+import cn.edu.upc.eduroamcontrolsystembackend.util.MyDateFormat;
+
 import javax.persistence.*;
 
 /**
@@ -16,6 +18,7 @@ public class Notification {
     private String sender;
     private String receiver;
     private String message;
+    private String createTime;
     private boolean viewed;
     private boolean receiverDeleted;
     private boolean senderDeleted;
@@ -27,6 +30,7 @@ public class Notification {
         this.sender = sender;
         this.receiver = receiver;
         this.message = message;
+        this.createTime = new MyDateFormat().formattedDate();
         this.viewed = false;
         this.receiverDeleted = false;
         this.senderDeleted = false;
@@ -58,6 +62,10 @@ public class Notification {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public String getCreateTime() {
+        return createTime;
     }
 
     public boolean isViewed() {
