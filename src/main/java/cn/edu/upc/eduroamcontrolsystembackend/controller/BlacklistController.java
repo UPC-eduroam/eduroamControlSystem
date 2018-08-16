@@ -40,6 +40,8 @@ public class BlacklistController {
     private BlacklistService blacklistService;
     @Autowired
     private GetUserAuthority getUserAuthority;
+    @Autowired
+    private MyDateFormat myDateFormat;
 
     @ApiOperation(value = "添加用户到黑名单")
     @ApiImplicitParams({
@@ -52,7 +54,7 @@ public class BlacklistController {
             return new ResponseMessage(-1, "无法将管理员加入黑名单");
         }
         blacklistService.createBlacklist(objectId);
-        userUsageLogService.createUserUsageLog(adminId, new MyDateFormat().formattedDate(), "添加用户" + objectId + "到黑名单");
+        userUsageLogService.createUserUsageLog(adminId, myDateFormat.formattedDate(), "添加用户" + objectId + "到黑名单");
         return true;
     }
 
@@ -64,7 +66,7 @@ public class BlacklistController {
     public Object deleteUserFromBlacklist(String objectId) {
         String adminId = getUserIdFromRequest.getUserId(request);
         blacklistService.deleteBlacklist(objectId);
-        userUsageLogService.createUserUsageLog(adminId, new MyDateFormat().formattedDate(), "将用户" + objectId + "从黑名单移除");
+        userUsageLogService.createUserUsageLog(adminId, myDateFormat.formattedDate(), "将用户" + objectId + "从黑名单移除");
         return true;
     }
 
@@ -75,7 +77,7 @@ public class BlacklistController {
     @GetMapping("/IsInBlacklist")
     public Object isInBlacklist(String objectId) {
         String adminId = getUserIdFromRequest.getUserId(request);
-        userUsageLogService.createUserUsageLog(adminId, new MyDateFormat().formattedDate(), "查询用户" + objectId + "是否在黑名单");
+        userUsageLogService.createUserUsageLog(adminId, myDateFormat.formattedDate(), "查询用户" + objectId + "是否在黑名单");
         return blacklistService.findByUserId(objectId) != null;
     }
 
@@ -83,7 +85,7 @@ public class BlacklistController {
     @GetMapping("/GetAllUsersFromBlacklist")
     public Object getAllUsersFromBlacklist() {
         String adminId = getUserIdFromRequest.getUserId(request);
-        userUsageLogService.createUserUsageLog(adminId, new MyDateFormat().formattedDate(), "获取所有黑名单");
+        userUsageLogService.createUserUsageLog(adminId, myDateFormat.formattedDate(), "获取所有黑名单");
         return blacklistService.findAll();
     }
 }

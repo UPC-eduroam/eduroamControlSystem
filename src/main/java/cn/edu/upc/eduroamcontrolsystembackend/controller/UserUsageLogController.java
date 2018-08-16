@@ -31,6 +31,8 @@ public class UserUsageLogController {
     private GetUserIdFromRequest getUserIdFromRequest;
     @Autowired
     private UserUsageLogService userUsageLogService;
+    @Autowired
+    private MyDateFormat myDateFormat;
 
     @ApiOperation("获取指定用户的所有操作记录")
     @ApiImplicitParams({
@@ -42,7 +44,7 @@ public class UserUsageLogController {
 //    @PreAuthorize("hasRole('ADMIN')")
     public Object GetUserUsageLogsByUserIdAndDate(String objectId, String startDate, String endDate) {
         String adminId = getUserIdFromRequest.getUserId(request);
-        userUsageLogService.createUserUsageLog(adminId, new MyDateFormat().formattedDate(), "查询用户 " + objectId + " 的操作日志");
+        userUsageLogService.createUserUsageLog(adminId, myDateFormat.formattedDate(), "查询用户 " + objectId + " 的操作日志");
         return userUsageLogService.findAllByUserIdAndOperatingTimeBetween(objectId, startDate, endDate);
     }
 }

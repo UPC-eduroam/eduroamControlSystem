@@ -39,6 +39,8 @@ public class NotificationController {
     private GetUserAuthority getUserAuthority;
     @Autowired
     private UserUsageLogService userUsageLogService;
+    @Autowired
+    private MyDateFormat myDateFormat;
 
     @ApiOperation(value = "发送消息给指定用户(限制:学生只能发送给管理员)")
     @ApiImplicitParams({
@@ -60,7 +62,7 @@ public class NotificationController {
         if (getUserAuthority.getAuthorityByUserId(sender).contains("ADMIN"))
             sender = "ADMIN";
         notificationService.create(sender, receiver, message);
-        userUsageLogService.createUserUsageLog(sender, new MyDateFormat().formattedDate(), "发送一条消息给用户" + receiver);
+        userUsageLogService.createUserUsageLog(sender, myDateFormat.formattedDate(), "发送一条消息给用户" + receiver);
         return new ResponseMessage(0, "发送成功");
     }
 
