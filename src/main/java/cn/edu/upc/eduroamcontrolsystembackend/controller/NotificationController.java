@@ -50,16 +50,10 @@ public class NotificationController {
     @PostMapping("/CreateNotification")
     public Object createNotification(String receiver, String message) {
         String sender = getUserIdFromRequest.getUserId(request);
-
-        System.out.println("receiver is -> " + receiver);
-        System.out.println("equals?? -> " + receiver.equals("ADMIN"));
-
-
-        if (getUserAuthority.getAuthorityByUserId(sender).contains("USER") &&
-                !receiver.equals("ADMIN")) {
+        String authority = getUserAuthority.getAuthorityByUserId(sender);
+        if (authority.contains("USER") && !receiver.equals("ADMIN"))
             return new ResponseMessage(-1, "学生只能给管理员发送消息");
-        }
-        if (getUserAuthority.getAuthorityByUserId(sender).contains("ADMIN"))
+        if (authority.contains("ADMIN"))
             sender = "ADMIN";
         notificationService.create(sender, receiver, message);
         userUsageLogService.createUserUsageLog(sender, myDateFormat.formattedDate(), "发送一条消息给用户" + receiver);
@@ -91,9 +85,11 @@ public class NotificationController {
     @PostMapping("/MarkAsViewed")
     public Object markAsViewed(int notificationId) {
         String userId = getUserIdFromRequest.getUserId(request);
+        if (getUserAuthority.getAuthorityByUserId(userId).contains("ADMIN"))
+            userId = "ADMIN";
         try {
-            if (notificationDAO.findOne(notificationId).getReceiver().equals(userId)) {
-                Notification notification = notificationDAO.findOne(notificationId);
+            Notification notification = notificationDAO.findOne(notificationId);
+            if (notification.getReceiver().equals(userId)) {
                 notification.setViewed(true);
                 notificationService.update(notification);
             } else
