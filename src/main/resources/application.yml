@@ -1,18 +1,22 @@
 spring:
     primary:
         datasource:
-            url: jdbc:mysql://182.254.133.79:3306/eduroam_control_system?useSSL=false
+            url: jdbc:mysql://localhost:3306/eduroam_control_system?useSSL=false
             username: eduroam
             password: eduroam_control_system
             driver-class-name: com.mysql.jdbc.Driver
+            test-while-idle: true
+            validation-query: SELECT 1
 
-
+    #配置对eduroam进行AAA的radius服务器数据库,注意数据库名一致
     radius:
         datasource:
             url: jdbc:mysql://localhost:3306/radius?useSSL=false
-            username: root
-            password: 123456
+            username: eduroam
+            password: eduroam_control_system
             driver-class-name: com.mysql.jdbc.Driver
+            test-while-idle: true
+            validation-query: SELECT 1
 
     jpa:
         show-sql: true
@@ -28,9 +32,13 @@ logging:
     level:
         org.springframework.security: info
 
-
-# 自定义的配置
 jwt:
     header: Authorization
     secret: Secret
     expiration: 604800
+
+# 校园网计费系统api配置, 主要是获取指定用户在校园网的在线状态
+campus-net:
+    api:
+        root: http://server-ip:port/api        #api根路径
+        getUserOnlineState: 例如findOnlineState #相对于api根路径的用于获取指定用户在校园网的在线状态的接口
