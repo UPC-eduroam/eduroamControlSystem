@@ -42,3 +42,12 @@ campus-net:
     api:
         root: http://server-ip:port/api        #api根路径
         getUserOnlineState: 例如findOnlineState #相对于api根路径的用于获取指定用户在校园网的在线状态的接口
+
+
+# 系统轮询数据库进行分析的间隔时间,单位为分钟,默认为10,
+polling-interval: 10
+# 如需修改polling-interval,请将schedule中的分钟间隔值修改为相同值
+schedule: 0 */10 * * * ?
+
+# 系统检测到用户账户存在eduroam与校园网同时在线现象后发给用户的警告
+warning2User: "系统检测到你的账户存在eduroam与校园网同时在线现象,请确保自己的账号密码没有外泄,请不要把自己的账号借给别人使用,否则将会封停账号"
