@@ -17,7 +17,7 @@ public class RadPostAuthService {
     private RadPostAuthDAO radPostAuthDAO;
 
     public Iterable<RadPostAuth> findAllByAuthdateBetween(Timestamp start, Timestamp end) {
-        return radPostAuthDAO.findAllByAuthdateBetween(start, end);
+        return radPostAuthDAO.findAllByAuthdateBetweenAndAndReplyIs(start, end, "Access-Accept");
     }
 
 }

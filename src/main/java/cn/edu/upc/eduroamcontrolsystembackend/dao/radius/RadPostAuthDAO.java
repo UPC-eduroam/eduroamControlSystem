@@ -11,6 +11,7 @@ import java.sql.Timestamp;
 
 public interface RadPostAuthDAO extends CrudRepository<RadPostAuth, Integer> {
 
-    Iterable<RadPostAuth> findAllByAuthdateBetween(Timestamp start, Timestamp end);
+    Iterable<RadPostAuth> findAllByAuthdateBetweenAndAndReplyIs(Timestamp start, Timestamp end, String reply);
+
 
 }
