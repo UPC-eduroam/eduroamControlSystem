@@ -8,6 +8,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +21,7 @@ import java.util.Date;
  */
 
 @Service
+@EnableScheduling
 public class Sentry {
     @Autowired
     private GetUserStateInCampusNet getUserStateInCampusNet;
@@ -38,18 +40,24 @@ public class Sentry {
 
     @Scheduled(cron = "${schedule}")
     public void keepEyesOnRadius() {
+        logger.info("--> 哨兵开始此次轮询 <--");
         Date date = new Date();
         Timestamp start = new Timestamp(date.getTime() - 60000 * interval);
         Timestamp end = new Timestamp(date.getTime());
         Iterable<RadPostAuth> userIds = getLatestAccessRequests.getAllLatestUsernames(start, end);
+        int counter = 0;
+        int abnormal = 0;
         for (RadPostAuth user : userIds) {
-            System.out.println(user.getUsername());
+            counter++;
             String userId = user.getUsername();
             if (getUserStateInCampusNet.getUserOnlineState(userId)) {
+                abnormal++;
                 logger.info("发现用户 " + userId + " 存在eduroam与校园网同时在线现象");
                 notificationService.create("system", userId, warning2User);
                 notificationService.create("system", "ADMIN", "发现用户 " + userId + " 存在eduroam与校园网同时在线现象");
             }
         }
+        logger.info("此次共获取到" + counter + "名最近" + interval + "分钟登录eduroam的用户,发现" + abnormal + "个异常账号");
+        logger.info(">-- 哨兵结束此次轮询 --<");
     }
 }
