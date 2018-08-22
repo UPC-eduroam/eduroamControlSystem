@@ -17,7 +17,7 @@ public class GetLatestAccessRequests {
     @Autowired
     private RadPostAuthService radPostAuthService;
 
-    public Iterable<RadPostAuth> getAllLatestUsernames(Timestamp start, Timestamp end) {
+    public Iterable<Object> getAllLatestUsernames(Timestamp start, Timestamp end) {
         return radPostAuthService.findAllByAuthdateBetween(start, end);
     }
 

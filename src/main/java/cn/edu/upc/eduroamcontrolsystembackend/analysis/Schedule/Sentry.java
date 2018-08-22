@@ -2,7 +2,6 @@ package cn.edu.upc.eduroamcontrolsystembackend.analysis.Schedule;
 
 import cn.edu.upc.eduroamcontrolsystembackend.analysis.util.GetLatestAccessRequests;
 import cn.edu.upc.eduroamcontrolsystembackend.analysis.util.GetUserStateInCampusNet;
-import cn.edu.upc.eduroamcontrolsystembackend.model.radius.RadPostAuth;
 import cn.edu.upc.eduroamcontrolsystembackend.service.NotificationService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -44,12 +43,12 @@ public class Sentry {
         Date date = new Date();
         Timestamp start = new Timestamp(date.getTime() - 60000 * interval);
         Timestamp end = new Timestamp(date.getTime());
-        Iterable<RadPostAuth> userIds = getLatestAccessRequests.getAllLatestUsernames(start, end);
+        Iterable<Object> userIds = getLatestAccessRequests.getAllLatestUsernames(start, end);
         int counter = 0;
         int abnormal = 0;
-        for (RadPostAuth user : userIds) {
+        for (Object oneUserId : userIds) {
             counter++;
-            String userId = user.getUsername();
+            String userId = oneUserId.toString();
             if (getUserStateInCampusNet.getUserOnlineState(userId)) {
                 abnormal++;
                 logger.info("发现用户 " + userId + " 存在eduroam与校园网同时在线现象");
@@ -57,7 +56,7 @@ public class Sentry {
                 notificationService.create("system", "ADMIN", "发现用户 " + userId + " 存在eduroam与校园网同时在线现象");
             }
         }
-        logger.info("此次共获取到" + counter + "名最近" + interval + "分钟登录eduroam的用户,发现" + abnormal + "个异常账号");
-        logger.info(">-- 哨兵结束此次轮询 --<");
+        logger.info("此次共获取到" + counter + "名最近" + interval + "分钟内登录eduroam的用户,发现" + abnormal + "个异常账号");
+        logger.info(">-- 哨兵结束此次轮询 --<\n");
     }
 }
