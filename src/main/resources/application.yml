@@ -26,6 +26,7 @@ spring:
               physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
 
 server:
+    ip: host ip/domain    #所部署服务器的地址(ip或域名)
     port: 8081
 
 logging:
@@ -58,3 +59,4 @@ schedule: 0 */10 * * * ?
 
 # 系统检测到用户账户存在eduroam与校园网同时在线现象后发给用户的警告
 warning2User: "系统检测到你的账户存在eduroam与校园网同时在线现象,请确保自己的账号密码没有外泄,请不要把自己的账号借给别人使用,否则将会封停账号"
+warning2Admin: "系统检测到如下用户的eduroam账号存在异常,请及时处理: "
