@@ -43,6 +43,13 @@ campus-net:
         root: http://server-ip:port/api        #api根路径
         getUserOnlineState: 例如findOnlineState #相对于api根路径的用于获取指定用户在校园网的在线状态的接口
 
+# 配置系统所用邮箱账号
+email:
+    username: name@***.com      #所使用的邮箱地址
+    password: password          #邮箱地址的客户端授权密码,区别于邮箱密码,一般在开启SMTP服务时要求设置
+    protocol: smtp              #所用发件协议,默认为smtp
+    host: host addr             #所用邮箱的服务提供商的服务器地址,如网易163邮箱的是 smtp.163.com
+    port: 25                    #所用邮箱的服务提供商的服务器对应的发件协议服务的端口,如smtp协议默认为25端口
 
 # 系统轮询数据库进行分析的间隔时间,单位为分钟,默认为10,
 polling-interval: 10
