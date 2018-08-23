@@ -23,6 +23,8 @@ public class User {
 
     private String userId;
 
+    private String emailAddress;
+
     @JsonIgnore
     private String password;
 
@@ -54,6 +56,14 @@ public class User {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public String getEmailAddress() {
+        return emailAddress;
+    }
+
+    public void setEmailAddress(String emailAddress) {
+        this.emailAddress = emailAddress;
     }
 
     public String getPassword() {

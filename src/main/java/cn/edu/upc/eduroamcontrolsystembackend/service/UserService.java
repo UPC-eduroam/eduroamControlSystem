@@ -17,4 +17,12 @@ public class UserService {
     public User findFirstByUserId(String userId) {
         return userDAO.findFirstByUserId(userId);
     }
+
+    public User findFirstByEmailAddress(String emailAddress) {
+        return userDAO.findFirstByEmailAddress(emailAddress);
+    }
+
+    public void update(User user) {
+        userDAO.save(user);
+    }
 }
