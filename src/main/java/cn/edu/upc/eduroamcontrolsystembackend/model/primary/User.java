@@ -28,7 +28,8 @@ public class User {
     @JsonIgnore
     private String password;
 
-    private Date LastPasswordResetDate;
+    @JsonIgnore
+    private Date lastPasswordResetDate;
 
     @JsonIgnore
     @ManyToMany(fetch = FetchType.EAGER)
@@ -75,11 +76,11 @@ public class User {
     }
 
     public Date getLastPasswordResetDate() {
-        return LastPasswordResetDate;
+        return lastPasswordResetDate;
     }
 
     public void setLastPasswordResetDate(Date lastPasswordResetDate) {
-        LastPasswordResetDate = lastPasswordResetDate;
+        this.lastPasswordResetDate = lastPasswordResetDate;
     }
 
     public List<Authority> getAuthorities() {
