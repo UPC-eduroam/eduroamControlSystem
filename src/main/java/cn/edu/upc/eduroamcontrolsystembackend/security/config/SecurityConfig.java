@@ -39,11 +39,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             "/**/*.css",
             "/**/*.js",
 
-            // -- swagger ui
+            // swagger ui
             "/swagger-resources/**",
             "/swagger-ui.html",
             "/v2/api-docs",
-            "/webjars/**"
+            "/webjars/**",
+
+            //验证绑定邮箱的链接
+            "/UserController/VerifyEmail"
 
     };
 
