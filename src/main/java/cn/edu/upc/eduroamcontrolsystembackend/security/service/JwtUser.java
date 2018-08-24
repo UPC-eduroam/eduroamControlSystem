@@ -1,5 +1,6 @@
 package cn.edu.upc.eduroamcontrolsystembackend.security.service;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -18,15 +19,17 @@ public class JwtUser implements UserDetails {
     private int id;
     private String userId;
     private String password;
-    private final Date LastPasswordResetDate;
+    private final Date lastPasswordResetDate;
+    private String emailAddress;
     private final Collection<? extends GrantedAuthority> authorities;
 
 
-    public JwtUser(int id, String userId, String password, Date LastPasswordResetDate, List<GrantedAuthority> authorities) {
+    public JwtUser(int id, String userId, String password, Date lastPasswordResetDate, String emailAddress, List<GrantedAuthority> authorities) {
         this.id = id;
         this.userId = userId;
         this.password = password;
-        this.LastPasswordResetDate = LastPasswordResetDate;
+        this.lastPasswordResetDate = lastPasswordResetDate;
+        this.emailAddress = emailAddress;
         this.authorities = authorities;
     }
 
@@ -46,15 +49,25 @@ public class JwtUser implements UserDetails {
         this.password = password;
     }
 
-    public Date getLastPasswordResetDate() {
-        return LastPasswordResetDate;
+    public String getEmailAddress() {
+        return emailAddress;
     }
+
+    public void setEmailAddress(String emailAddress) {
+        this.emailAddress = emailAddress;
+    }
+
+    public Date getLastPasswordResetDate() {
+        return lastPasswordResetDate;
+    }
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return null;
     }
 
+    @JsonIgnore
     @Override
     public String getPassword() {
         return password;
