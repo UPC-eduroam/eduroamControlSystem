@@ -24,8 +24,8 @@ public class AESCrypt {
         try {
             Cipher cipher = Cipher.getInstance("AES");
             cipher.init(Cipher.ENCRYPT_MODE, secretKey);
-            byte[] p = plainText.getBytes("UTF-8");
-            byte[] result = cipher.doFinal(p);
+            byte[] plain = plainText.getBytes("UTF-8");
+            byte[] result = cipher.doFinal(plain);
             BASE64Encoder encoder = new BASE64Encoder();
             return encoder.encode(result);
         } catch (Exception e) {
@@ -39,8 +39,8 @@ public class AESCrypt {
             Cipher cipher = Cipher.getInstance("AES");
             cipher.init(Cipher.DECRYPT_MODE, secretKey);
             BASE64Decoder decoder = new BASE64Decoder();
-            byte[] c = decoder.decodeBuffer(cipherText);
-            byte[] result = cipher.doFinal(c);
+            byte[] encrypted = decoder.decodeBuffer(cipherText);
+            byte[] result = cipher.doFinal(encrypted);
             return new String(result, "UTF-8");
         } catch (Exception e) {
             throw new RuntimeException(e);

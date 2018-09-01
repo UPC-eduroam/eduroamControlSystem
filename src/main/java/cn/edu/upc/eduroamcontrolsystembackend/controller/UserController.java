@@ -62,7 +62,6 @@ public class UserController {
         map.put("generateDate", generateDate);
         String json = JSON.toJSONString(map);
         String secret = AESCrypt.encrypt(json);
-        System.out.println("email secret: " + secret);
         String url = "http://" + target + "/UserController/VerifyEmail?secret=" + secret;
         StringBuffer stringBuffer = new StringBuffer();
         stringBuffer.append("您好，</br>").
