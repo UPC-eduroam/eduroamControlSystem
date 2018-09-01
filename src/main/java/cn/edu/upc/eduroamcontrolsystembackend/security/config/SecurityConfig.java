@@ -2,17 +2,18 @@ package cn.edu.upc.eduroamcontrolsystembackend.security.config;
 
 import cn.edu.upc.eduroamcontrolsystembackend.security.service.JwtAuthenticationEntryPoint;
 import cn.edu.upc.eduroamcontrolsystembackend.security.service.JwtAuthenticationTokenFilter;
+import cn.edu.upc.eduroamcontrolsystembackend.security.service.JwtUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -30,7 +31,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    //无需权限即可访问的白名单
+    // 无需权限即可访问的网页白名单
     private static final String[] AUTH_WHITELIST = {
             "/",
             "/*.html",
@@ -55,15 +56,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     // Spring会自动寻找实现接口的类注入,会找到我们自己实现的UserDetailsService类
     @Autowired
-    private UserDetailsService userDetailsService;
+    private JwtUserDetailsService jwtUserDetailsService;
 
     @Autowired
     public void configureAuthentication(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
         authenticationManagerBuilder
                 // 设置UserDetailsService
-                .userDetailsService(this.userDetailsService)
+                .userDetailsService(this.jwtUserDetailsService)
                 // 使用BCrypt对密码进行加密
                 .passwordEncoder(passwordEncoder());
+    }
+
+    @Bean
+    @Override
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
     }
 
     @Bean
@@ -76,6 +83,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new JwtAuthenticationTokenFilter();
     }
 
+    @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
                 //禁用csrf防护功能,因为使用token进行身份验证,所以较为安全,而且禁用后也方便开发
@@ -87,6 +95,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 //放开options请求
                 .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                //放开白名单
                 .antMatchers(HttpMethod.GET, AUTH_WHITELIST).permitAll()
                 //允许匿名访问获取token的api
                 .antMatchers("/user/login").permitAll()
@@ -98,6 +107,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .addFilterBefore(authenticationTokenFilterBean(), UsernamePasswordAuthenticationFilter.class);
 
         // 禁用缓存
-        httpSecurity.headers().cacheControl();
+        httpSecurity
+                .headers()
+                .frameOptions().sameOrigin()
+                .cacheControl();
     }
+
 }

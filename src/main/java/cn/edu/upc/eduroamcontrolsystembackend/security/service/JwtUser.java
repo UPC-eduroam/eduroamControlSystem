@@ -4,9 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Date;
 import java.util.Collection;
-import java.util.List;
+import java.util.Date;
 
 /**
  * This is description.
@@ -24,7 +23,7 @@ public class JwtUser implements UserDetails {
     private final Collection<? extends GrantedAuthority> authorities;
 
 
-    public JwtUser(int id, String userId, String password, Date lastPasswordResetDate, String emailAddress, List<GrantedAuthority> authorities) {
+    public JwtUser(int id, String userId, String password, Date lastPasswordResetDate, String emailAddress, Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
         this.userId = userId;
         this.password = password;
@@ -64,7 +63,7 @@ public class JwtUser implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        return authorities;
     }
 
     @JsonIgnore
