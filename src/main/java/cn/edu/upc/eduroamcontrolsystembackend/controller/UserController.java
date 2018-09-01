@@ -14,6 +14,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -49,6 +50,7 @@ public class UserController {
             @ApiImplicitParam(paramType = "query", name = "emailAddress", value = "邮箱地址", required = true, dataType = "String"),
     })
     @PostMapping("/BindEmail")
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     public Object bindEmail(String emailAddress) {
         if (userService.findFirstByEmailAddress(emailAddress) != null)
             return new ResponseMessage(-1, "操作失败! 该邮箱已被绑定!");
@@ -118,6 +120,7 @@ public class UserController {
             @ApiImplicitParam(paramType = "query", name = "confirmNewPassword", value = "确认重设的密码", required = true, dataType = "String"),
     })
     @PostMapping("/ResetPassword")
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     public Object resetPassword(String oldPassword, String newPassword, String confirmNewPassword) {
         String userId = getUserIdFromRequest.getUserId(request);
         User user = userService.findFirstByUserId(userId);

@@ -28,7 +28,7 @@ import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("BlackListController")
-//@PreAuthorize("hasRole('ADMIN')")
+@PreAuthorize("hasRole('ADMIN')")
 public class BlacklistController {
     @Autowired
     private HttpServletRequest request;
