@@ -12,6 +12,4 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface BlacklistDAO extends CrudRepository<Blacklist, Integer> {
     Blacklist findFirstByUserId(String userId);
-
-    void deleteByUserId(String userId);
 }

@@ -34,7 +34,7 @@ public class BlacklistService {
      */
     public void deleteBlacklist(String userId) {
         Blacklist blacklist = blacklistDAO.findFirstByUserId(userId);
-        blacklistDAO.deleteByUserId(blacklist.getUserId());
+        blacklistDAO.delete(blacklist.getId());
     }
 
     /**
