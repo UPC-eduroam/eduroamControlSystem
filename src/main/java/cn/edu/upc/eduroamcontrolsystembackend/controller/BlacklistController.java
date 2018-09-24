@@ -2,6 +2,7 @@ package cn.edu.upc.eduroamcontrolsystembackend.controller;
 
 import cn.edu.upc.eduroamcontrolsystembackend.dto.ResponseMessage;
 import cn.edu.upc.eduroamcontrolsystembackend.service.BlacklistService;
+import cn.edu.upc.eduroamcontrolsystembackend.service.UserService;
 import cn.edu.upc.eduroamcontrolsystembackend.service.UserUsageLogService;
 import cn.edu.upc.eduroamcontrolsystembackend.util.GetUserAuthority;
 import cn.edu.upc.eduroamcontrolsystembackend.util.GetUserIdFromRequest;
@@ -42,6 +43,8 @@ public class BlacklistController {
     private GetUserAuthority getUserAuthority;
     @Autowired
     private MyDateFormat myDateFormat;
+    @Autowired
+    private UserService userService;
 
     @ApiOperation(value = "添加用户到黑名单")
     @ApiImplicitParams({
@@ -50,12 +53,15 @@ public class BlacklistController {
     @PostMapping("/AddUserToBlacklist")
     public Object addUserToBlacklist(String objectId) {
         String adminId = getUserIdFromRequest.getUserId(request);
+        if (userService.findFirstByUserId(adminId) != null) {
+            return new ResponseMessage(-1, "该用户不存在");
+        }
         if (getUserAuthority.getAuthorityByUserId(objectId).contains("ADMIN")) {
             return new ResponseMessage(-1, "无法将管理员加入黑名单");
         }
         blacklistService.createBlacklist(objectId);
         userUsageLogService.createUserUsageLog(adminId, myDateFormat.formattedDate(), "添加用户" + objectId + "到黑名单");
-        return true;
+        return new ResponseMessage(0, "加入黑名单成功");
     }
 
     @ApiOperation(value = "将用户从黑名单移除")

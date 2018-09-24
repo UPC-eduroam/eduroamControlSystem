@@ -73,6 +73,9 @@ public class Sentry {
                         logger.info("已发送warning邮件给用户" + userId);
                     else
                         logger.warn("发送warning邮件给用户" + userId + " 失败");
+                else
+                    logger.warn("用户" + userId + "未绑定邮箱, 无法发送通知邮件");
+
                 //发送警告邮件给所有管理员
                 Map<String, String> emails = getAllAdminEmailAddress.getAll();
                 if (emails != null)
